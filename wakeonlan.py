@@ -2,7 +2,6 @@
 
 import re
 import socket
-import sys
 
 help_message = \
 """
@@ -50,7 +49,7 @@ def send_magic_packet(mac_address, ip_address="255.255.255.255", port=7):
     sock.sendto(packet, (ip_address, port))
     return True
 
-def wake_multiple(mac_addresses, ip_address="255.255.255.255", port=7):
+def wake_multi(mac_addresses, ip_address="255.255.255.255", port=7):
     """
     Send the magic packet to multiple machines.
     
@@ -65,6 +64,7 @@ def wake_multiple(mac_addresses, ip_address="255.255.255.255", port=7):
         send_magic_packet(macaddress, ip_address=ip_address, port=port)
 
 if __name__ == "__main__":
+    import sys
     args = sys.argv
     ip_address = "255.255.255.255"
     port = 7
