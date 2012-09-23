@@ -92,7 +92,7 @@ def wake_multi(mac_addresses, ip_address="255.255.255.255", port=7):
     
     """
     for mac_address in mac_addresses:
-        send_magic_packet(macaddress, ip_address=ip_address, port=port)
+        send_magic_packet(mac_address, ip_address=ip_address, port=port)
 
 if __name__ == "__main__":
     import sys
