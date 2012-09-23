@@ -108,8 +108,8 @@ if __name__ == "__main__":
         elif i is len(args) - 1:
             mac_address = args[i]
         else:
-            sys.exit(help_message)
+            sys.exit(help_message % args[0])
     
     success = send_magic_packet(mac_address, ip_address=ip_address, port=port)
-    print("Magic packet sent succesfully." if success else help_message)
+    print("Magic packet sent succesfully." if success else help_message % args[0])
 
