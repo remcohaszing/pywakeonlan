@@ -58,6 +58,7 @@ def create_magic_packet(mac_address):
     Create a magic packet which can be used for wake on lan using the
     mac address given as a parameter.
     
+    Keyword arguments:
     mac_address -- the mac address that should be parsed into a magic
             packet
     
