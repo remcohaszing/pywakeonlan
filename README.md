@@ -1,7 +1,13 @@
 pywakeonlan
 ===========
 
-A small python module for wake on lan.
+A small python module for wake on lan.  
+It has been tested both locally and externally using Python 2.7.3 and
+Python 3.2.3  
+
+The project is hosted on https://github.com/Trollhammaren/pywakeonlan  
+
+This module is licensed under the WTFPL
 
 Usage
 -----
@@ -20,5 +26,5 @@ Usage
 
 Dependencies
 ------------
-- Python
+- Python2.x or Python3.x
 
