@@ -5,10 +5,11 @@ Small module for use with the wake on lan protocol.
 
 """
 
+from __future__ import unicode_literals
+
 import re
 import socket
 import sys
-from __future__ import unicode_literals
 
 __author__ = 'Remco Haszing'
 __license__ = 'WTFPL'
