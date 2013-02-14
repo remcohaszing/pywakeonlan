@@ -21,17 +21,17 @@ broadcast package.
 
 ### As a python module
 
-  - Import the module
+- Import the module
 
         import wakeonlan
 
 
-  - Wake up a single computer by its mac address
+- Wake up a single computer by its mac address
 
         wakeonlan.send_magic_packet('ff.ff.ff.ff.ff.ff')
 
 
-  - Wake up multiple computers by their mac addresses. Note that both dots and
+- Wake up multiple computers by their mac addresses. Note that both dots and
     minus signs are allowed or no delimiters at all. The mac addresses are also
     case insensitive.
 
@@ -41,7 +41,7 @@ broadcast package.
                 'FFFFFFFFFFFF'])
 
 
-  - An external host may be specified. Do note that port forwarding on that host
+- An external host may be specified. Do note that port forwarding on that host
     is required. The default ip address is 255.255.255.255 and the default port
     is 9.
 
