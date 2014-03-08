@@ -1,4 +1,3 @@
-#!/usr/bin/python
 # -*- encoding: utf-8 -*-
 
 """
@@ -9,10 +8,8 @@ Small module for use with the wake on lan protocol.
 from __future__ import absolute_import
 from __future__ import unicode_literals
 
-import re
 import socket
 import struct
-import sys
 
 __author__ = 'Remco Haszing'
 __license__ = 'WTFPL'
@@ -21,21 +18,6 @@ __website__ = 'https://github.com/Trollhammaren/pywakeonlan'
 
 BROADCAST_IP = '255.255.255.255'
 DEFAULT_PORT = 9
-help_message = """
-Usage:
-    %s [-i ip_address] [-p port] mac_address
-
-  Options:
-    -h              Show this help message.
-
-    -i ip address   The broadcast ip address the magic packet should be
-                    sent to.
-
-    -p port         The port to which the package should be sent.
-
-    mac_address     The mac address or hardware address of the computer
-                    you are trying to wake.
-"""
 
 
 def create_magic_packet(macaddress):
@@ -80,8 +62,8 @@ def send_magic_packet(*macs, **kwargs):
 
     """
     packets = []
-    ip = kwargs.get('ip_address', BROADCAST_IP)
-    port = kwargs.get('port', DEFAULT_PORT)
+    ip = kwargs.pop('ip_address', BROADCAST_IP)
+    port = kwargs.pop('port', DEFAULT_PORT)
     for k in kwargs:
         raise TypeError('send_magic_packet() got an unexpected keyword '
                         'argument {!r}'.format(k))
@@ -96,25 +78,3 @@ def send_magic_packet(*macs, **kwargs):
     for packet in packets:
         sock.send(packet)
     sock.close()
-
-
-if __name__ == '__main__':
-    args = sys.argv
-    ip_address = BROADCAST_IP
-    port = DEFAULT_PORT
-    mac_address = ''
-    for i in range(1, len(args), 2):
-        if args[i] == '-i':
-            ip_address = args[i + 1]
-        elif args[i] == '-p':
-            port = int(args[i + 1])
-        elif i is len(args) - 1:
-            mac_address = args[i]
-        else:
-            sys.exit(help_message % args[0])
-
-    if mac_address and send_magic_packet(mac_address, ip_address=ip_address,
-                                                                    port=port):
-        print('Magic packet sent succesfully.')
-    else:
-        print(help_message % args[0])

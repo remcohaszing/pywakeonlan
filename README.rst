@@ -47,17 +47,19 @@ As a python module
 As a standalone script
 ----------------------
 
-    wol.py [-i ip_address] [-p port] mac_address
+    usage: wol [-h] [-i ip] [-p port] mac addresses [mac addresses ...]
 
-        -h              Show this help message.
+    Wake one or more computers using the wake on lan protocol
 
-        -i ip address   The broadcast ip address the magic packet should be
-                        sent to.
+    positional arguments:
+      mac addresses  The mac addresses or of the computers you are trying to wake.
 
-        -p port         The port to which the package should be sent.
+    optional arguments:
+      -h, --help     show this help message and exit
+      -i ip          The ip address of the host to send the magic packet to.
+                     (default 255.255.255.255)
+      -p port        The port of the host to send the magic packet to (default 9)
 
-        mac_address     The mac address or hardware address of the computer
-                        you are trying to wake.
 
 Dependencies
 ------------
