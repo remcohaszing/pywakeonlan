@@ -44,8 +44,8 @@ def create_magic_packet(macaddress):
     mac address given as a parameter.
 
     Keyword arguments:
-    mac_address -- the mac address that should be parsed into a magic
-            packet
+    :arg macaddress: the mac address that should be parsed into a magic
+                     packet.
 
     """
     if len(macaddress) == 12:
