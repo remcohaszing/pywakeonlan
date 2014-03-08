@@ -11,6 +11,10 @@ from __future__ import unicode_literals
 import socket
 import struct
 
+__author__ = 'Remco Haszing'
+__license__ = 'WTFPL'
+__email__ = 'remcohaszing@gmail.com'
+__website__ = 'https://github.com/Trollhammaren/pywakeonlan'
 
 BROADCAST_IP = '255.255.255.255'
 DEFAULT_PORT = 9
