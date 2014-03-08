@@ -47,6 +47,8 @@ As a python module
 As a standalone script
 ----------------------
 
+::
+
     usage: wol [-h] [-i ip] [-p port] mac addresses [mac addresses ...]
 
     Wake one or more computers using the wake on lan protocol
