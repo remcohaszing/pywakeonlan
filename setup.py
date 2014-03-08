@@ -2,6 +2,10 @@
 
 from distutils.core import setup
 
+
+with open('README.rst') as f:
+    readme = f.read()
+
 setup(
     name='wakeonlan',
     version='0.1.1',
@@ -10,7 +14,5 @@ setup(
     author='Remco Haszing',
     author_email='remcohaszing@gmail.com',
     packages=['wakeonlan'],
-    license='DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE',
-    long_description='\n'.join([c if not c.startswith('##') else
-        c.strip('# ') + '\n---' for c in open('README.md').read().split('\n')])
-)
+    license='WTFPL',
+    long_description=readme)
