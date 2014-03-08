@@ -1,10 +1,12 @@
+# -*- encoding: utf-8 -*-
+
 from distutils.core import setup
 
 setup(
     name='wakeonlan',
     version='0.1.1',
     description='A small python module for wake on lan.',
-    url='https://github.com/Trollhammaren/pywakeonlan',
+    url='https://github.com/remcohaszing/pywakeonlan',
     author='Remco Haszing',
     author_email='remcohaszing@gmail.com',
     packages=['wakeonlan'],
