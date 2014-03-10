@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- encoding: utf-8 -*-
 
-from distutils.core import setup
+from setuptools import setup
 
 
 with open('README.rst') as f:
@@ -9,7 +9,7 @@ with open('README.rst') as f:
 
 setup(
     name='wakeonlan',
-    version='0.2.0',
+    version='0.2.1',
     description='A small python module for wake on lan.',
     url='https://github.com/remcohaszing/pywakeonlan',
     author='Remco Haszing',
