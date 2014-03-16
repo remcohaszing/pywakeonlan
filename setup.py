@@ -9,7 +9,7 @@ with open('README.rst') as f:
 
 setup(
     name='wakeonlan',
-    version='0.2.1',
+    version='0.2.2',
     description='A small python module for wake on lan.',
     url='https://github.com/remcohaszing/pywakeonlan',
     author='Remco Haszing',
