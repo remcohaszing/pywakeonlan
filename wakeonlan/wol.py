@@ -35,7 +35,7 @@ def create_magic_packet(macaddress):
         raise ValueError('Incorrect MAC address format')
 
     # Pad the synchronization stream
-    data = b'FFFFFFFFFFFF' + (macaddress * 20).encode()
+    data = b'FFFFFFFFFFFF' + (macaddress * 16).encode()
     send_data = b''
 
     # Split up the hex values in pack
