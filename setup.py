@@ -17,9 +17,9 @@ setup(
     url='https://github.com/remcohaszing/pywakeonlan',
     author='Remco Haszing',
     author_email='remcohaszing@gmail.com',
-    packages=['wakeonlan'],
+    py_modules=['wakeonlan'],
     license='WTFPL',
     long_description=readme,
     entry_points={
-        'console_scripts': 'wakeonlan = wakeonlan.wol:main'
+        'console_scripts': 'wakeonlan = wakeonlan:main'
     })

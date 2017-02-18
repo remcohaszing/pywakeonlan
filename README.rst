@@ -23,27 +23,27 @@ As a python module
 
 - Import the module
 
->>> from wakeonlan import wol
+>>> from wakeonlan import send_magic_packet
 
 
 - Wake up a single computer by its mac address
 
->>> wol.send_magic_packet('ff.ff.ff.ff.ff.ff')
+>>> send_magic_packet('ff.ff.ff.ff.ff.ff')
 
 
 - Wake up multiple computers by their mac addresses.
 
->>> wol.send_magic_packet('ff.ff.ff.ff.ff.ff', '00-00-00-00-00-00',
-...                       'FFFFFFFFFFFF')
+>>> send_magic_packet('ff.ff.ff.ff.ff.ff', '00-00-00-00-00-00',
+...                   'FFFFFFFFFFFF')
 
 
 - An external host may be specified. Do note that port forwarding on that host
   is required. The default ip address is 255.255.255.255 and the default port
   is 9.
 
->>> wol.send_magic_packet('ff.ff.ff.ff.ff.ff',
-...                       ip_address='example.com',
-...                       port=1337)
+>>> send_magic_packet('ff.ff.ff.ff.ff.ff',
+...                   ip_address='example.com',
+...                   port=1337)
 
 
 As a standalone script
