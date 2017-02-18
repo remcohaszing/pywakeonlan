@@ -20,4 +20,6 @@ setup(
     packages=['wakeonlan'],
     license='WTFPL',
     long_description=readme,
-    scripts=['script/wol'])
+    entry_points={
+        'console_scripts': 'wakeonlan = wakeonlan.wol:main'
+    })

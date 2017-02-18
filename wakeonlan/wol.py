@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 # -*- encoding: utf-8 -*-
 """
 Small module for use with the wake on lan protocol.
@@ -6,6 +7,7 @@ Small module for use with the wake on lan protocol.
 from __future__ import absolute_import
 from __future__ import unicode_literals
 
+import argparse
 import socket
 import struct
 
@@ -76,3 +78,35 @@ def send_magic_packet(*macs, **kwargs):
     for packet in packets:
         sock.send(packet)
     sock.close()
+
+
+def main():
+    """
+    Run wake on lan as a CLI application.
+
+    """
+    parser = argparse.ArgumentParser(
+        description='Wake one or more computers using the wake on lan'
+                    ' protocol.')
+    parser.add_argument(
+        'macs',
+        metavar='mac address',
+        nargs='+',
+        help='The mac addresses or of the computers you are trying to wake.')
+    parser.add_argument(
+        '-i',
+        metavar='ip',
+        default=BROADCAST_IP,
+        help='The ip address of the host to send the magic packet to.'
+             ' (default {})'.format(BROADCAST_IP))
+    parser.add_argument(
+        '-p',
+        metavar='port',
+        default=DEFAULT_PORT,
+        help='The port of the host to send the magic packet to (default 9)')
+    args = parser.parse_args()
+    send_magic_packet(*args.macs, ip_address=args.i, port=args.p)
+
+
+if __name__ == '__main__':
+    main()
