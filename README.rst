@@ -1,6 +1,9 @@
 wakeonlan
 =========
 
+.. image:: https://img.shields.io/travis/remcohaszing/pywakeonlan/master.svg
+    :target: https://travis-ci.org/remcohaszing/pywakeonlan
+
 A small python module for wake on lan. It has been tested both locally and
 externally using Python 2.7.3 and Python 3.2.3.
 

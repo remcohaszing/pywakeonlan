@@ -1,10 +1,8 @@
 # -*- encoding: utf-8 -*-
-
 """
 Small module for use with the wake on lan protocol.
 
 """
-
 from __future__ import absolute_import
 from __future__ import unicode_literals
 
@@ -18,7 +16,10 @@ DEFAULT_PORT = 9
 
 def create_magic_packet(macaddress):
     """
-    Create a magic packet which can be used for wake on lan using the
+    Create a magic packet.
+
+    A magic packet is a packet that can be used with the for wake on lan
+    protocol to wake up a computer. The packet is constructed from the
     mac address given as a parameter.
 
     Keyword arguments:
@@ -46,8 +47,9 @@ def create_magic_packet(macaddress):
 
 def send_magic_packet(*macs, **kwargs):
     """
-    Wakes the computer with the given mac address if wake on lan is
-    enabled on that host.
+    Wake up computers having any of the given mac addresses.
+
+    Wake on lan must be enabled on the host device.
 
     Keyword arguments:
     :arguments macs: One or more macaddresses of machines to wake.

@@ -1,6 +1,9 @@
 #!/usr/bin/env python
 # -*- encoding: utf-8 -*-
+"""
+Install the wakeonlan module.
 
+"""
 from setuptools import setup
 
 
