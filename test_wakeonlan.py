@@ -77,7 +77,7 @@ def test_create_magic_packet(mac, packet):
     assert result == packet
 
 
-@patch('socket.socket', autospec=True)
+@patch('socket.socket')
 def test_send_magic_packet(sock):
     """
     Test whether the magic packets are broadcasted to the specified network.
@@ -129,7 +129,7 @@ def test_send_magic_packet(sock):
     ]
 
 
-@patch('socket.socket', autospec=True)
+@patch('socket.socket')
 def test_send_magic_packet_default(sock):
     """
     Test whether the magic packets are broadcasted using default values.
