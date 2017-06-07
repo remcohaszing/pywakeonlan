@@ -102,6 +102,7 @@ def main():
     parser.add_argument(
         '-p',
         metavar='port',
+        type=int,
         default=DEFAULT_PORT,
         help='The port of the host to send the magic packet to (default 9)')
     args = parser.parse_args()
