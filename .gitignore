@@ -1,9 +1,9 @@
 *.pyc
 *.egg-info/
 /.cache/
+/.coverage
 /.tox/
 /build/
-/coverage.xml
 /dist/
 /docs/_build
 /MANIFEST
