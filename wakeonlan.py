@@ -24,9 +24,9 @@ def create_magic_packet(macaddress):
     protocol to wake up a computer. The packet is constructed from the
     mac address given as a parameter.
 
-    Keyword arguments:
-    :arg macaddress: the mac address that should be parsed into a magic
-                     packet.
+    Args:
+        macaddress (str): the mac address that should be parsed into a
+            magic packet.
 
     """
     if len(macaddress) == 12:
@@ -53,11 +53,13 @@ def send_magic_packet(*macs, **kwargs):
 
     Wake on lan must be enabled on the host device.
 
-    Keyword arguments:
-    :arguments macs: One or more macaddresses of machines to wake.
-    :key ip_address: the ip address of the host to send the magic packet
+    Args:
+        macs (str): One or more macaddresses of machines to wake.
+
+    Keyword Args:
+        ip_address (str): the ip address of the host to send the magic packet
                      to (default "255.255.255.255")
-    :key port: the port of the host to send the magic packet to
+        port (int): the port of the host to send the magic packet to
                (default 9)
 
     """

@@ -4,5 +4,6 @@
 /.tox/
 /build/
 /dist/
+/docs/_build
 /MANIFEST
 __pycache__/

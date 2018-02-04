@@ -1,0 +1,7 @@
+###########
+Pywakeonlan
+###########
+
+.. toctree::
+    readme
+    apidocs
