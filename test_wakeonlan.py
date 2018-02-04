@@ -9,6 +9,7 @@ from mock import call
 from mock import patch
 
 from wakeonlan import create_magic_packet
+from wakeonlan import main
 from wakeonlan import send_magic_packet
 
 
@@ -178,3 +179,17 @@ def test_send_magic_packet_default(sock):
             b'\x00\x00\x00\x00\x00\x00'),
         call().close(),
     ]
+
+
+@patch('wakeonlan.send_magic_packet')
+def test_main(send_magic_packet):
+    """
+    Test if processed arguments are passed to send_magic_packet.
+
+    """
+    main(['00:11:22:33:44:55', '-i', 'host.example', '-p', '1337'])
+    assert send_magic_packet.mock_calls == [call(
+        '00:11:22:33:44:55',
+        ip_address='host.example',
+        port=1337,
+    )]

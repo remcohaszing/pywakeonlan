@@ -1,3 +1,6 @@
 [run]
 branch = true
 source = wakeonlan
+
+[report]
+show_missing = true

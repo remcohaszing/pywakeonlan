@@ -82,7 +82,7 @@ def send_magic_packet(*macs, **kwargs):
     sock.close()
 
 
-def main():
+def main(argv=None):
     """
     Run wake on lan as a CLI application.
 
@@ -107,9 +107,9 @@ def main():
         type=int,
         default=DEFAULT_PORT,
         help='The port of the host to send the magic packet to (default 9)')
-    args = parser.parse_args()
+    args = parser.parse_args(argv)
     send_magic_packet(*args.macs, ip_address=args.i, port=args.p)
 
 
-if __name__ == '__main__':
+if __name__ == '__main__':  # pragma: nocover
     main()
