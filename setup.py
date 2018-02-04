@@ -21,5 +21,5 @@ setup(
     license='WTFPL',
     long_description=readme,
     entry_points={
-        'console_scripts': 'wakeonlan = wakeonlan:main'
+        'console_scripts': 'wakeonlan = wakeonlan:main',
     })

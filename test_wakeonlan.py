@@ -125,7 +125,7 @@ def test_send_magic_packet(sock):
             b'\x00\x00\x00\x00\x00\x00'
             b'\x00\x00\x00\x00\x00\x00'
             b'\x00\x00\x00\x00\x00\x00'),
-        call().close()
+        call().close(),
     ]
 
 
@@ -176,5 +176,5 @@ def test_send_magic_packet_default(sock):
             b'\x00\x00\x00\x00\x00\x00'
             b'\x00\x00\x00\x00\x00\x00'
             b'\x00\x00\x00\x00\x00\x00'),
-        call().close()
+        call().close(),
     ]
