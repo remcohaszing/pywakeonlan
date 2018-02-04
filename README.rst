@@ -1,6 +1,10 @@
 wakeonlan
 =========
 
+.. image:: https://img.shields.io/pypi/v/wakeonlan.svg
+   :target: https://pypi.python.org/pypi/wakeonlan
+   :alt: Pypi version
+
 .. image:: https://img.shields.io/travis/remcohaszing/pywakeonlan/master.svg
     :target: https://travis-ci.org/remcohaszing/pywakeonlan
     :alt: Build Status
