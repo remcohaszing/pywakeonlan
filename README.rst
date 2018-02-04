@@ -13,6 +13,10 @@ wakeonlan
     :target: https://pywakeonlan.readthedocs.io/en/latest
     :alt: Documentation Status
 
+.. image:: https://codecov.io/gh/remcohaszing/pywakeonlan/branch/master/graph/badge.svg
+  :target: https://codecov.io/gh/remcohaszing/pywakeonlan
+  :alt: Code coverage
+
 A small python module for wake on lan. It has been tested both locally and
 externally using Python 2.7.3 and Python 3.2.3.
 

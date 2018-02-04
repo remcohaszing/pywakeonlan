@@ -1,8 +1,10 @@
 language: python
 python:
 - '3.6'
-install: pip install tox
+install: pip install codecov tox
 script: tox
+after_success:
+- covecov
 deploy:
   provider: pypi
   distributions: sdist bdist_wheel
