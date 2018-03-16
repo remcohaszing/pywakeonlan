@@ -12,7 +12,6 @@ with open('README.rst') as f:
 
 setup(
     name='wakeonlan',
-    version='1.0.0',
     description='A small python module for wake on lan.',
     url='https://github.com/remcohaszing/pywakeonlan',
     author='Remco Haszing',
@@ -20,6 +19,8 @@ setup(
     py_modules=['wakeonlan'],
     license='MIT',
     long_description=readme,
+    use_scm_version=True,
+    setup_requires=['setuptools-scm ~= 1.15.7'],
     entry_points={
         'console_scripts': ['wakeonlan = wakeonlan:main'],
     })

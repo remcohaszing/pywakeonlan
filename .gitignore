@@ -1,6 +1,7 @@
 *.pyc
 *.egg-info/
 /.coverage
+/.eggs/
 /.pytest_cache/
 /.tox/
 /build/
