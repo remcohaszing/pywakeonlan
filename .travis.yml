@@ -13,8 +13,5 @@ after_success:
 deploy:
   provider: pypi
   distributions: sdist bdist_wheel
-  user: remcohaszing
-  password:
-    secure: a6261wiCI9u+ANX7LYtClLbjOSo3j4TD/X8yfYNt8Sqvh1a1fkE/h5rhZinxA7IJbu1MBWZiSqOJnoIa17TaNRDRXCyY+rJJohpTYL43A9FoplIYx6EFcEDE6Al/jIRpAtv0ZxkIZ9bVp0MLwRzp5PlGvM+xxlkKIV+aZQiCJxY=
   on:
     tags: true
