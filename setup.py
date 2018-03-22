@@ -18,7 +18,7 @@ setup(
     author='Remco Haszing',
     author_email='remcohaszing@gmail.com',
     py_modules=['wakeonlan'],
-    license='WTFPL',
+    license='MIT',
     long_description=readme,
     entry_points={
         'console_scripts': ['wakeonlan = wakeonlan:main'],

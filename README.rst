@@ -87,7 +87,7 @@ Dependencies
 Licence
 -------
 
-WTFPL
+MIT
 
 
 .. _GitHub: https://github.com/remcohaszing/pywakeonlan
