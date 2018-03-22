@@ -1,7 +1,12 @@
 language: python
 python:
+- '2.7'
+- '3.2'
+- '3.3'
+- '3.4'
+- '3.5'
 - '3.6'
-install: pip install codecov tox
+install: pip install codecov tox-travis
 script: tox
 after_success:
 - codecov
