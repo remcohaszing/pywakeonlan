@@ -21,6 +21,21 @@ setup(
     long_description=readme,
     use_scm_version=True,
     setup_requires=['setuptools-scm ~= 1.15.7'],
+    classifiers=[
+        'Development Status :: 5 - Production/Stable',
+        'Intended Audience :: Developers',
+        'Intended Audience :: System Administrators',
+        'License :: OSI Approved :: MIT License',
+        'Operating System :: OS Independent',
+        'Programming Language :: Python :: 2',
+        'Programming Language :: Python :: 2.7',
+        'Programming Language :: Python :: 3',
+        'Programming Language :: Python :: 3.3',
+        'Programming Language :: Python :: 3.4',
+        'Programming Language :: Python :: 3.5',
+        'Programming Language :: Python :: 3.6',
+        'Topic :: System :: Networking',
+    ],
     entry_points={
         'console_scripts': ['wakeonlan = wakeonlan:main'],
     })
