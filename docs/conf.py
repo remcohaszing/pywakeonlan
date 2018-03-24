@@ -2,7 +2,16 @@
 Configuration for the documentation generation.
 
 """
-project = 'Python wakeonlan'
+import pkg_resources
+
+
+project = 'wakeonlan'
+_dist = pkg_resources.get_distribution(project)
+
+version = _dist.parsed_version.base_version
+release = _dist.version
+copyright = '2012, Remco Haszing'
+
 
 extensions = [
     'sphinx.ext.autodoc',

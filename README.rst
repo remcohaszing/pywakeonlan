@@ -1,9 +1,14 @@
+#########
 wakeonlan
-=========
+#########
 
 .. image:: https://img.shields.io/pypi/v/wakeonlan.svg
-   :target: https://pypi.python.org/pypi/wakeonlan
+   :target: https://pypi.org/project/wakeonlan/
    :alt: Pypi version
+
+.. image:: https://img.shields.io/pypi/pyversions/wakeonlan.svg
+   :target: https://pypi.org/project/wakeonlan/#files
+   :alt: Supported Python versions
 
 .. image:: https://img.shields.io/travis/remcohaszing/pywakeonlan/master.svg
     :target: https://travis-ci.org/remcohaszing/pywakeonlan
@@ -14,25 +19,28 @@ wakeonlan
     :alt: Documentation Status
 
 .. image:: https://codecov.io/gh/remcohaszing/pywakeonlan/branch/master/graph/badge.svg
-  :target: https://codecov.io/gh/remcohaszing/pywakeonlan
-  :alt: Code coverage
+   :target: https://codecov.io/gh/remcohaszing/pywakeonlan
+   :alt: Code coverage
 
-A small python module for wake on lan. It has been tested both locally and
-externally using Python 2.7.3 and Python 3.2.3.
+A small python module for wake on lan.
 
-The project is hosted on GitHub_. For more information on the wake on lan
-protocol please take a look at Wikipedia_.
+For more information on the wake on lan protocol please take a look at
+Wikipedia_.
 
+
+*****
 Usage
------
+*****
 
 To wake up a computer using wake on lan it must first be enabled in the BIOS
 settings. Please note the computer you are trying to power on does not have an
 ip address, but it does have a mac address. The package needs to be sent as a
 broadcast package.
 
+
+******************
 As a python module
-------------------
+******************
 
 - Import the module
 
@@ -59,8 +67,9 @@ As a python module
 ...                   port=1337)
 
 
+**********************
 As a standalone script
-----------------------
+**********************
 
 ::
 
@@ -78,14 +87,16 @@ As a standalone script
       -p port      The port of the host to send the magic packet to (default 9)
 
 
+************
 Dependencies
-------------
+************
 
 - Python2.x or Python3.x
 
 
-Licence
--------
+*******
+License
+*******
 
 MIT
 
