@@ -11,7 +11,7 @@ after_success:
 - gitchangelog $(git describe --abbrev=0 --tags)..master > CHANGELOG.md
 deploy:
 - provider: releases
-  api_key: $GITUB_OAUTH_TOKEN
+  api_key: $GITHUB_OAUTH_TOKEN
   file: CHANGELOG.md
   skip_cleanup: true
   on:
