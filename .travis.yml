@@ -10,11 +10,11 @@ install: pip install codecov gitchangelog tox-travis
 script: tox
 after_success:
 - codecov
-- gitchangelog $(git describe --abbrev=0 --tags HEAD^)..HEAD > CHANGELOG.md
+- export CHANGELOG=$(gitchangelog $(git describe --abbrev=0 --tags HEAD^)..HEAD)
 deploy:
 - provider: releases
   api_key: $GITHUB_OAUTH_TOKEN
-  file: CHANGELOG.md
+  body: $CHANGELOG
   skip_cleanup: true
   on:
     tags: true
