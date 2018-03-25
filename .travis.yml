@@ -22,7 +22,6 @@ deploy:
 - provider: releases
   api_key: $GITHUB_OAUTH_TOKEN
   file: dist/*
-  body: $CHANGELOG
   skip_cleanup: true
   on:
     tags: true
