@@ -5,6 +5,7 @@
 /.pytest_cache/
 /.tox/
 /build/
+/CHANGELOG.md
 /dist/
 /docs/_build
 /MANIFEST

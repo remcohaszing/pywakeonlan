@@ -6,12 +6,19 @@ python:
 - '3.4'
 - '3.5'
 - '3.6'
-install: pip install codecov tox-travis
+install: pip install codecov gitchangelog tox-travis
 script: tox
 after_success:
 - codecov
+- gitchangelog $(git describe --abbrev=0 --tags)..master > CHANGELOG.md
 deploy:
-  provider: pypi
+- provider: releases
+  api_key: $GITUB_OAUTH_TOKEN
+  file: CHANGELOG.md
+  skip_cleanup: true
+  on:
+    tags: true
+- provider: pypi
   distributions: sdist bdist_wheel
   on:
     tags: true
