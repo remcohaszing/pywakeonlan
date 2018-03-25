@@ -12,17 +12,18 @@ after_success:
 - codecov
 - export CHANGELOG=$(gitchangelog $(git describe --abbrev=0 --tags HEAD^)..HEAD)
 deploy:
-- provider: releases
-  api_key: $GITHUB_OAUTH_TOKEN
-  body: $CHANGELOG
-  skip_cleanup: true
-  on:
-    tags: true
-    python: '3.6'
 - provider: pypi
   distributions: sdist bdist_wheel
   user: $TWINE_USERNAME
   password: $TWINE_PASSWORD
+  on:
+    tags: true
+    python: '3.6'
+- provider: releases
+  api_key: $GITHUB_OAUTH_TOKEN
+  file: dist/*
+  body: $CHANGELOG
+  skip_cleanup: true
   on:
     tags: true
     python: '3.6'
