@@ -4,6 +4,8 @@ python:
 - '3.4'
 - '3.5'
 - '3.6'
+git:
+  depth: false
 install: pip install codecov gitchangelog tox-travis
 script: tox
 after_success:
