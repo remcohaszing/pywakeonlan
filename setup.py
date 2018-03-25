@@ -13,7 +13,10 @@ with open('README.rst') as f:
 setup(
     name='wakeonlan',
     description='A small python module for wake on lan.',
-    url='https://github.com/remcohaszing/pywakeonlan',
+    project_urls={
+        'Documentation': 'http://pywakeonlan.readthedocs.io',
+        'GitHub': 'https://github.com/remcohaszing/pywakeonlan',
+    },
     author='Remco Haszing',
     author_email='remcohaszing@gmail.com',
     py_modules=['wakeonlan'],
