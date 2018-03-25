@@ -16,7 +16,9 @@ deploy:
   skip_cleanup: true
   on:
     tags: true
+    python: '3.6'
 - provider: pypi
   distributions: sdist bdist_wheel
   on:
     tags: true
+    python: '3.6'
