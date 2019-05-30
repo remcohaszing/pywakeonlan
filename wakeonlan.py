@@ -99,14 +99,15 @@ def main(argv=None):
         '-i',
         metavar='ip',
         default=BROADCAST_IP,
-        help='The ip address of the host to send the magic packet to.'
-             ' (default {})'.format(BROADCAST_IP))
+        help='The ip address of the host to send the magic packet to '
+             '(default {}).'.format(BROADCAST_IP))
     parser.add_argument(
         '-p',
         metavar='port',
         type=int,
         default=DEFAULT_PORT,
-        help='The port of the host to send the magic packet to (default 9)')
+        help='The port of the host to send the magic packet to '
+             '(default {}).'.format(DEFAULT_PORT))
     args = parser.parse_args(argv)
     send_magic_packet(*args.macs, ip_address=args.i, port=args.p)
 
