@@ -14,6 +14,7 @@ import struct
 
 BROADCAST_IP = '255.255.255.255'
 DEFAULT_PORT = 9
+DEFAULT_INTERFACE = socket.gethostbyname(socket.gethostname())
 
 
 def create_magic_packet(macaddress):
@@ -66,6 +67,7 @@ def send_magic_packet(*macs, **kwargs):
     packets = []
     ip = kwargs.pop('ip_address', BROADCAST_IP)
     port = kwargs.pop('port', DEFAULT_PORT)
+    interface = kwargs.pop('interface', DEFAULT_INTERFACE)
     for k in kwargs:
         raise TypeError('send_magic_packet() got an unexpected keyword '
                         'argument {!r}'.format(k))
@@ -75,6 +77,7 @@ def send_magic_packet(*macs, **kwargs):
         packets.append(packet)
 
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    sock.bind((interface, 0))
     sock.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
     sock.connect((ip, port))
     for packet in packets:
@@ -99,15 +102,14 @@ def main(argv=None):
         '-i',
         metavar='ip',
         default=BROADCAST_IP,
-        help='The ip address of the host to send the magic packet to '
-             '(default {}).'.format(BROADCAST_IP))
+        help='The ip address of the host to send the magic packet to.'
+             ' (default {})'.format(BROADCAST_IP))
     parser.add_argument(
         '-p',
         metavar='port',
         type=int,
         default=DEFAULT_PORT,
-        help='The port of the host to send the magic packet to '
-             '(default {}).'.format(DEFAULT_PORT))
+        help='The port of the host to send the magic packet to (default 9)')
     args = parser.parse_args(argv)
     send_magic_packet(*args.macs, ip_address=args.i, port=args.p)
 
