@@ -91,7 +91,7 @@ As a standalone script
 Dependencies
 ************
 
-- Python2.x or Python3.x
+- Python3.x
 
 
 *******

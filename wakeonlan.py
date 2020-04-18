@@ -4,12 +4,8 @@
 Small module for use with the wake on lan protocol.
 
 """
-from __future__ import absolute_import
-from __future__ import unicode_literals
-
 import argparse
 import socket
-import struct
 
 
 BROADCAST_IP = '255.255.255.255'
@@ -37,14 +33,7 @@ def create_magic_packet(macaddress):
     else:
         raise ValueError('Incorrect MAC address format')
 
-    # Pad the synchronization stream
-    data = b'FFFFFFFFFFFF' + (macaddress * 16).encode()
-    send_data = b''
-
-    # Split up the hex values in pack
-    for i in range(0, len(data), 2):
-        send_data += struct.pack(b'B', int(data[i: i + 2], 16))
-    return send_data
+    return bytes.fromhex('F'*12 + macaddress*16)
 
 
 def send_magic_packet(*macs, **kwargs):
