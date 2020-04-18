@@ -29,12 +29,10 @@ def create_magic_packet(macaddress):
             magic packet.
 
     """
-    if len(macaddress) == 12:
-        pass
-    elif len(macaddress) == 17:
+    if len(macaddress) == 17:
         sep = macaddress[2]
         macaddress = macaddress.replace(sep, '')
-    else:
+    elif len(macaddress) != 12:
         raise ValueError('Incorrect MAC address format')
 
     # Pad the synchronization stream
@@ -63,16 +61,13 @@ def send_magic_packet(*macs, **kwargs):
                (default 9)
 
     """
-    packets = []
     ip = kwargs.pop('ip_address', BROADCAST_IP)
     port = kwargs.pop('port', DEFAULT_PORT)
     for k in kwargs:
         raise TypeError('send_magic_packet() got an unexpected keyword '
                         'argument {!r}'.format(k))
 
-    for mac in macs:
-        packet = create_magic_packet(mac)
-        packets.append(packet)
+    packets = [create_magic_packet(mac) for mac in macs]
 
     sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     sock.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
