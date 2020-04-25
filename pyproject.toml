@@ -1,0 +1,32 @@
+[tool.poetry]
+name = "wakeonlan"
+version = "1.1.6"
+description = "A small python module for wake on lan."
+authors = ["Remco Haszing <remcohaszing@gmail.com>"]
+license = "MIT"
+readme = "README.rst"
+documentation = "http://pywakeonlan.readthedocs.io"
+repository = "https://github.com/remcohaszing/pywakeonlan"
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "Intended Audience :: System Administrators",
+    "Topic :: System :: Networking"
+]
+
+[tool.poetry.scripts]
+wakeonlan = "wakeonlan:main"
+
+[tool.poetry.dependencies]
+python = "^3.5"
+
+[tool.poetry.dev-dependencies]
+flake8 = "^3.7.9"
+flake8-docstrings = "^1.5.0"
+flake8-import-order = "^0.18.1"
+pytest = "^5.4.1"
+pytest-cov = "^2.8.1"
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"
