@@ -33,7 +33,7 @@ def create_magic_packet(macaddress):
     else:
         raise ValueError('Incorrect MAC address format')
 
-    return bytes.fromhex('F'*12 + macaddress*16)
+    return bytes.fromhex('F' * 12 + macaddress * 16)
 
 
 def send_magic_packet(*macs, **kwargs):

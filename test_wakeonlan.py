@@ -3,10 +3,10 @@ Tests for wakeonlan.
 
 """
 import socket
+from unittest.mock import call
+from unittest.mock import patch
 
 import pytest
-from mock import call
-from mock import patch
 
 from wakeonlan import create_magic_packet
 from wakeonlan import main
