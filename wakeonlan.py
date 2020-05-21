@@ -8,7 +8,7 @@ import argparse
 import socket
 
 
-BROADCAST_IP = '255.255.255.255'
+BROADCAST_IP = "255.255.255.255"
 DEFAULT_PORT = 9
 
 
@@ -27,11 +27,11 @@ def create_magic_packet(macaddress):
     """
     if len(macaddress) == 17:
         sep = macaddress[2]
-        macaddress = macaddress.replace(sep, '')
+        macaddress = macaddress.replace(sep, "")
     elif len(macaddress) != 12:
-        raise ValueError('Incorrect MAC address format')
+        raise ValueError("Incorrect MAC address format")
 
-    return bytes.fromhex('F' * 12 + macaddress * 16)
+    return bytes.fromhex("F" * 12 + macaddress * 16)
 
 
 def send_magic_packet(*macs, **kwargs):
@@ -50,11 +50,12 @@ def send_magic_packet(*macs, **kwargs):
                (default 9)
 
     """
-    ip = kwargs.pop('ip_address', BROADCAST_IP)
-    port = kwargs.pop('port', DEFAULT_PORT)
+    ip = kwargs.pop("ip_address", BROADCAST_IP)
+    port = kwargs.pop("port", DEFAULT_PORT)
     for k in kwargs:
-        raise TypeError('send_magic_packet() got an unexpected keyword '
-                        'argument {!r}'.format(k))
+        raise TypeError(
+            "send_magic_packet() got an unexpected keyword " "argument {!r}".format(k)
+        )
 
     packets = [create_magic_packet(mac) for mac in macs]
 
@@ -71,29 +72,32 @@ def main(argv=None):
 
     """
     parser = argparse.ArgumentParser(
-        description='Wake one or more computers using the wake on lan'
-                    ' protocol.')
+        description="Wake one or more computers using the wake on lan" " protocol."
+    )
     parser.add_argument(
-        'macs',
-        metavar='mac address',
-        nargs='+',
-        help='The mac addresses or of the computers you are trying to wake.')
+        "macs",
+        metavar="mac address",
+        nargs="+",
+        help="The mac addresses or of the computers you are trying to wake.",
+    )
     parser.add_argument(
-        '-i',
-        metavar='ip',
+        "-i",
+        metavar="ip",
         default=BROADCAST_IP,
-        help='The ip address of the host to send the magic packet to '
-             '(default {}).'.format(BROADCAST_IP))
+        help="The ip address of the host to send the magic packet to "
+        "(default {}).".format(BROADCAST_IP),
+    )
     parser.add_argument(
-        '-p',
-        metavar='port',
+        "-p",
+        metavar="port",
         type=int,
         default=DEFAULT_PORT,
-        help='The port of the host to send the magic packet to '
-             '(default {}).'.format(DEFAULT_PORT))
+        help="The port of the host to send the magic packet to "
+        "(default {}).".format(DEFAULT_PORT),
+    )
     args = parser.parse_args(argv)
     send_magic_packet(*args.macs, ip_address=args.i, port=args.p)
 
 
-if __name__ == '__main__':  # pragma: nocover
+if __name__ == "__main__":  # pragma: nocover
     main()

@@ -29,6 +29,19 @@ jobs:
       - uses: codecov/codecov-action@v1
         if: ${{ matrix.python-version == 3.8 }}
 
+  black:
+    runs-on: ubuntu-latest
+    name: Black
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v1
+      - name: Install
+        run: |
+          pip install poetry
+          poetry install
+      - name: Black
+        run: poetry run flake8
+
   flake8:
     runs-on: ubuntu-latest
     name: Flake8
