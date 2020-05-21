@@ -88,9 +88,10 @@ def test_send_magic_packet(sock):
         '133713371337', '00-00-00-00-00-00', ip_address='example.com', port=7)
     assert sock.mock_calls == [
         call(socket.AF_INET, socket.SOCK_DGRAM),
-        call().setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1),
-        call().connect(('example.com', 7)),
-        call().send(
+        call().__enter__(),
+        call().__enter__().setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1),
+        call().__enter__().connect(('example.com', 7)),
+        call().__enter__().send(
             b'\xff\xff\xff\xff\xff\xff'
             b'\x137\x137\x137'
             b'\x137\x137\x137'
@@ -108,7 +109,7 @@ def test_send_magic_packet(sock):
             b'\x137\x137\x137'
             b'\x137\x137\x137'
             b'\x137\x137\x137'),
-        call().send(
+        call().__enter__().send(
             b'\xff\xff\xff\xff\xff\xff'
             b'\x00\x00\x00\x00\x00\x00'
             b'\x00\x00\x00\x00\x00\x00'
@@ -126,7 +127,7 @@ def test_send_magic_packet(sock):
             b'\x00\x00\x00\x00\x00\x00'
             b'\x00\x00\x00\x00\x00\x00'
             b'\x00\x00\x00\x00\x00\x00'),
-        call().close(),
+        call().__exit__(None, None, None),
     ]
 
 
@@ -139,9 +140,10 @@ def test_send_magic_packet_default(sock):
     send_magic_packet('133713371337', '00-00-00-00-00-00')
     assert sock.mock_calls == [
         call(socket.AF_INET, socket.SOCK_DGRAM),
-        call().setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1),
-        call().connect(('255.255.255.255', 9)),
-        call().send(
+        call().__enter__(),
+        call().__enter__().setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1),
+        call().__enter__().connect(('255.255.255.255', 9)),
+        call().__enter__().send(
             b'\xff\xff\xff\xff\xff\xff'
             b'\x137\x137\x137'
             b'\x137\x137\x137'
@@ -159,7 +161,7 @@ def test_send_magic_packet_default(sock):
             b'\x137\x137\x137'
             b'\x137\x137\x137'
             b'\x137\x137\x137'),
-        call().send(
+        call().__enter__().send(
             b'\xff\xff\xff\xff\xff\xff'
             b'\x00\x00\x00\x00\x00\x00'
             b'\x00\x00\x00\x00\x00\x00'
@@ -177,7 +179,7 @@ def test_send_magic_packet_default(sock):
             b'\x00\x00\x00\x00\x00\x00'
             b'\x00\x00\x00\x00\x00\x00'
             b'\x00\x00\x00\x00\x00\x00'),
-        call().close(),
+        call().__exit__(None, None, None),
     ]
 
 

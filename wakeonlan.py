@@ -63,12 +63,11 @@ def send_magic_packet(*macs, **kwargs):
         packet = create_magic_packet(mac)
         packets.append(packet)
 
-    sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    sock.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
-    sock.connect((ip, port))
-    for packet in packets:
-        sock.send(packet)
-    sock.close()
+    with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as sock:
+        sock.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
+        sock.connect((ip, port))
+        for packet in packets:
+            sock.send(packet)
 
 
 def main(argv=None):
