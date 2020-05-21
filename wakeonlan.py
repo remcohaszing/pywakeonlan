@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-# -*- encoding: utf-8 -*-
 """
 Small module for use with the wake on lan protocol.
 
@@ -34,7 +33,7 @@ def create_magic_packet(macaddress):
     return bytes.fromhex("F" * 12 + macaddress * 16)
 
 
-def send_magic_packet(*macs, **kwargs):
+def send_magic_packet(*macs, ip_address=BROADCAST_IP, port=DEFAULT_PORT):
     """
     Wake up computers having any of the given mac addresses.
 
@@ -50,18 +49,11 @@ def send_magic_packet(*macs, **kwargs):
                (default 9)
 
     """
-    ip = kwargs.pop("ip_address", BROADCAST_IP)
-    port = kwargs.pop("port", DEFAULT_PORT)
-    for k in kwargs:
-        raise TypeError(
-            "send_magic_packet() got an unexpected keyword " "argument {!r}".format(k)
-        )
-
     packets = [create_magic_packet(mac) for mac in macs]
 
     with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as sock:
         sock.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
-        sock.connect((ip, port))
+        sock.connect((ip_address, port))
         for packet in packets:
             sock.send(packet)
 
@@ -84,16 +76,14 @@ def main(argv=None):
         "-i",
         metavar="ip",
         default=BROADCAST_IP,
-        help="The ip address of the host to send the magic packet to "
-        "(default {}).".format(BROADCAST_IP),
+        help=f"The ip address of the host to send the magic packet to (default {BROADCAST_IP}).",
     )
     parser.add_argument(
         "-p",
         metavar="port",
         type=int,
         default=DEFAULT_PORT,
-        help="The port of the host to send the magic packet to "
-        "(default {}).".format(DEFAULT_PORT),
+        help=f"The port of the host to send the magic packet to (default {DEFAULT_PORT}).",
     )
     args = parser.parse_args(argv)
     send_magic_packet(*args.macs, ip_address=args.i, port=args.p)
