@@ -21,10 +21,10 @@ wakeonlan = "wakeonlan:main"
 python = "^3.5"
 
 [tool.poetry.dev-dependencies]
-flake8 = "^3.7.9"
+flake8 = "^3.8.1"
 flake8-docstrings = "^1.5.0"
 flake8-import-order = "^0.18.1"
-pytest = "^5.4.1"
+pytest = "^5.4.2"
 pytest-cov = "^2.8.1"
 
 [build-system]
