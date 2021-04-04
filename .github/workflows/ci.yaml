@@ -1,0 +1,49 @@
+name: ci
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+    tags: ['*']
+
+jobs:
+  pytest:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version:
+          - 3.6
+          - 3.7
+          - 3.8
+          - 3.9
+    name: Pytest ${{ matrix.python-version }}
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+      - run: curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python -
+      - run: poetry install
+      - run: poetry run pytest --cov --cov-report=xml
+      - uses: codecov/codecov-action@v1
+        if: ${{ matrix.python-version == 3.8 }}
+
+  black:
+    runs-on: ubuntu-latest
+    name: Black
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+      - run: curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python -
+      - run: poetry install
+      - run: poetry run flake8
+
+  flake8:
+    runs-on: ubuntu-latest
+    name: Flake8
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+      - run: curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python -
+      - run: poetry install
+      - run: poetry run flake8
