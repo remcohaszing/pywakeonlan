@@ -8,7 +8,7 @@ import pkg_resources
 project = "wakeonlan"
 _dist = pkg_resources.get_distribution(project)
 
-version = _dist.parsed_version.base_version
+version = _dist.version
 release = _dist.version
 copyright = "2012, Remco Haszing"
 

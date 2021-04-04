@@ -5,13 +5,14 @@ Small module for use with the wake on lan protocol.
 """
 import argparse
 import socket
+from typing import List
 
 
 BROADCAST_IP = "255.255.255.255"
 DEFAULT_PORT = 9
 
 
-def create_magic_packet(macaddress):
+def create_magic_packet(macaddress: str) -> bytes:
     """
     Create a magic packet.
 
@@ -20,8 +21,7 @@ def create_magic_packet(macaddress):
     mac address given as a parameter.
 
     Args:
-        macaddress (str): the mac address that should be parsed into a
-            magic packet.
+        macaddress: the mac address that should be parsed into a magic packet.
 
     """
     if len(macaddress) == 17:
@@ -33,20 +33,20 @@ def create_magic_packet(macaddress):
     return bytes.fromhex("F" * 12 + macaddress * 16)
 
 
-def send_magic_packet(*macs, ip_address=BROADCAST_IP, port=DEFAULT_PORT):
+def send_magic_packet(
+    *macs: str, ip_address: str = BROADCAST_IP, port: int = DEFAULT_PORT
+):
     """
     Wake up computers having any of the given mac addresses.
 
     Wake on lan must be enabled on the host device.
 
     Args:
-        macs (str): One or more macaddresses of machines to wake.
+        macs: One or more macaddresses of machines to wake.
 
     Keyword Args:
-        ip_address (str): the ip address of the host to send the magic packet
-                     to (default "255.255.255.255")
-        port (int): the port of the host to send the magic packet to
-               (default 9)
+        ip_address: the ip address of the host to send the magic packet to.
+        port: the port of the host to send the magic packet to.
 
     """
     packets = [create_magic_packet(mac) for mac in macs]
@@ -58,7 +58,7 @@ def send_magic_packet(*macs, ip_address=BROADCAST_IP, port=DEFAULT_PORT):
             sock.send(packet)
 
 
-def main(argv=None):
+def main(argv: List[str] = None):
     """
     Run wake on lan as a CLI application.
 
