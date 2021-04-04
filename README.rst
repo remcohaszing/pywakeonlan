@@ -38,38 +38,35 @@ ip address, but it does have a mac address. The package needs to be sent as a
 broadcast package.
 
 
-******************
 As a python module
-******************
+==================
 
-- Import the module
+Import the module
 
 >>> from wakeonlan import send_magic_packet
 
 
-- Wake up a single computer by its mac address
+Wake up a single computer by its mac address
 
 >>> send_magic_packet('ff.ff.ff.ff.ff.ff')
 
 
-- Wake up multiple computers by their mac addresses.
+Wake up multiple computers by their mac addresses.
 
 >>> send_magic_packet('ff.ff.ff.ff.ff.ff', '00-00-00-00-00-00',
 ...                   'FFFFFFFFFFFF')
 
 
-- An external host may be specified. Do note that port forwarding on that host
-  is required. The default ip address is 255.255.255.255 and the default port
-  is 9.
+An external host may be specified. Do note that port forwarding on that host is
+required. The default ip address is 255.255.255.255 and the default port is 9.
 
 >>> send_magic_packet('ff.ff.ff.ff.ff.ff',
 ...                   ip_address='example.com',
 ...                   port=1337)
 
 
-**********************
 As a standalone script
-**********************
+======================
 
 ::
 
@@ -82,9 +79,8 @@ As a standalone script
 
     optional arguments:
       -h, --help   show this help message and exit
-      -i ip        The ip address of the host to send the magic packet to.
-                   (default 255.255.255.255)
-      -p port      The port of the host to send the magic packet to (default 9)
+      -i ip        The ip address of the host to send the magic packet to. (default 255.255.255.255)
+      -p port      The port of the host to send the magic packet to. (default 9)
 
 
 ************
