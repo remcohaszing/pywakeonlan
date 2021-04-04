@@ -64,7 +64,8 @@ def main(argv=None):
 
     """
     parser = argparse.ArgumentParser(
-        description="Wake one or more computers using the wake on lan" " protocol."
+        description="Wake one or more computers using the wake on lan protocol.",
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
     )
     parser.add_argument(
         "macs",
@@ -76,14 +77,14 @@ def main(argv=None):
         "-i",
         metavar="ip",
         default=BROADCAST_IP,
-        help=f"The ip address of the host to send the magic packet to (default {BROADCAST_IP}).",
+        help="The ip address of the host to send the magic packet to.",
     )
     parser.add_argument(
         "-p",
         metavar="port",
         type=int,
         default=DEFAULT_PORT,
-        help=f"The port of the host to send the magic packet to (default {DEFAULT_PORT}).",
+        help="The port of the host to send the magic packet to.",
     )
     args = parser.parse_args(argv)
     send_magic_packet(*args.macs, ip_address=args.i, port=args.p)
