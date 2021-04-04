@@ -1,0 +1,15 @@
+version: 2
+
+sphinx:
+  configuration: docs/conf.py
+  fail_on_warning: true
+
+formats:
+  - pdf
+  - epub
+
+python:
+  version: 3.9
+  install:
+    method: pip
+    path: .
