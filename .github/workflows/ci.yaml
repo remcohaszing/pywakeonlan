@@ -7,26 +7,6 @@ on:
     tags: ['*']
 
 jobs:
-  pytest:
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        python-version:
-          - 3.6
-          - 3.7
-          - 3.8
-          - 3.9
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-python@v2
-        with:
-          python-version: ${{ matrix.python-version }}
-      - run: pip install poetry
-      - run: poetry install
-      - run: poetry run pytest --cov --cov-report=xml
-      - uses: codecov/codecov-action@v1
-        if: ${{ matrix.python-version == 3.8 }}
-
   black:
     runs-on: ubuntu-latest
     steps:
@@ -53,3 +33,23 @@ jobs:
       - run: pip install poetry
       - run: poetry install
       - run: poetry run mypy .
+
+  pytest:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version:
+          - 3.6
+          - 3.7
+          - 3.8
+          - 3.9
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+      - run: pip install poetry
+      - run: poetry install
+      - run: poetry run pytest --cov --cov-report=xml
+      - uses: codecov/codecov-action@v1
+        if: ${{ matrix.python-version == 3.8 }}
