@@ -16,7 +16,6 @@ jobs:
           - 3.7
           - 3.8
           - 3.9
-    name: Pytest ${{ matrix.python-version }}
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-python@v2
@@ -30,7 +29,6 @@ jobs:
 
   black:
     runs-on: ubuntu-latest
-    name: Black
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-python@v2
@@ -40,7 +38,6 @@ jobs:
 
   flake8:
     runs-on: ubuntu-latest
-    name: Flake8
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-python@v2
