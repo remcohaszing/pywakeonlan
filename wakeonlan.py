@@ -35,7 +35,7 @@ def create_magic_packet(macaddress: str) -> bytes:
 
 def send_magic_packet(
     *macs: str, ip_address: str = BROADCAST_IP, port: int = DEFAULT_PORT
-):
+) -> None:
     """
     Wake up computers having any of the given mac addresses.
 
@@ -58,7 +58,7 @@ def send_magic_packet(
             sock.send(packet)
 
 
-def main(argv: List[str] = None):
+def main(argv: List[str] = None) -> None:
     """
     Run wake on lan as a CLI application.
 

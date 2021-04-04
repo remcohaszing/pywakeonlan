@@ -44,3 +44,12 @@ jobs:
       - run: pip install poetry
       - run: poetry install
       - run: poetry run flake8
+
+  mypy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+      - run: pip install poetry
+      - run: poetry install
+      - run: poetry run mypy .

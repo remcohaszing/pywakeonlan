@@ -29,6 +29,7 @@ pytest = "^6.2.3"
 pytest-cov = "^2.11.1"
 sphinx = "^3.5.3"
 sphinx-rtd-theme = "^0.5.1"
+mypy = "^0.812"
 
 [tool.coverage.run]
 branch = true

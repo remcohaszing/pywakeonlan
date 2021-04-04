@@ -3,6 +3,8 @@ Tests for wakeonlan.
 
 """
 import socket
+from typing import List
+from unittest.mock import Mock
 from unittest.mock import call
 from unittest.mock import patch
 
@@ -79,7 +81,7 @@ from wakeonlan import send_magic_packet
     ],
     ids=["no separator", "colons", "hyphens"],
 )
-def test_create_magic_packet(mac, packet):
+def test_create_magic_packet(mac: str, packet: List[int]) -> None:
     """
     Test whether a correct magic packet is created.
 
@@ -89,7 +91,7 @@ def test_create_magic_packet(mac, packet):
 
 
 @patch("socket.socket")
-def test_send_magic_packet(sock):
+def test_send_magic_packet(sock: Mock) -> None:
     """
     Test whether the magic packets are broadcasted to the specified network.
 
@@ -149,7 +151,7 @@ def test_send_magic_packet(sock):
 
 
 @patch("socket.socket")
-def test_send_magic_packet_default(sock):
+def test_send_magic_packet_default(sock: Mock) -> None:
     """
     Test whether the magic packets are broadcasted using default values.
 
@@ -207,7 +209,7 @@ def test_send_magic_packet_default(sock):
 
 
 @patch("wakeonlan.send_magic_packet")
-def test_main(send_magic_packet):
+def test_main(send_magic_packet: Mock) -> None:
     """
     Test if processed arguments are passed to send_magic_packet.
 
