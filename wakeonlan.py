@@ -34,7 +34,7 @@ def create_magic_packet(macaddress: str) -> bytes:
 
 
 def send_magic_packet(
-    *macs: str, ip_address: str = BROADCAST_IP, port: int = DEFAULT_PORT
+    *macs: str, ip_address: str = BROADCAST_IP, port: int = DEFAULT_PORT, feedback = False
 ) -> None:
     """
     Wake up computers having any of the given mac addresses.
@@ -47,6 +47,7 @@ def send_magic_packet(
     Keyword Args:
         ip_address: the ip address of the host to send the magic packet to.
         port: the port of the host to send the magic packet to.
+        feedback: if true feedback will appear in the terminal. By default False.
 
     """
     packets = [create_magic_packet(mac) for mac in macs]
@@ -55,7 +56,12 @@ def send_magic_packet(
         sock.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
         sock.connect((ip_address, port))
         for packet in packets:
-            sock.send(packet)
+            send = sock.send(packet)
+            if feedback:
+                if str(send) == str(102):
+                    print("Package has been sent.")
+                else:
+                    print("Package has not been sent.")
 
 
 def main(argv: List[str] = None) -> None:
