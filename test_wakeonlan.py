@@ -208,6 +208,71 @@ def test_send_magic_packet_default(sock: Mock) -> None:
     ]
 
 
+@patch("socket.socket")
+def test_send_magic_packet_interface(sock: Mock) -> None:
+    """
+    Test whether the magic packets are broadcasted to the specified network via specified interface.
+
+    """
+    send_magic_packet(
+        "133713371337",
+        "00-00-00-00-00-00",
+        ip_address="example.com",
+        port=7,
+        interface="192.168.0.2",
+    )
+    assert sock.mock_calls == [
+        call(socket.AF_INET, socket.SOCK_DGRAM),
+        call().__enter__(),
+        call().__enter__().bind(("192.168.0.2", 0)),
+        call().__enter__().setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1),
+        call().__enter__().connect(("example.com", 7)),
+        call()
+        .__enter__()
+        .send(
+            b"\xff\xff\xff\xff\xff\xff"
+            b"\x137\x137\x137"
+            b"\x137\x137\x137"
+            b"\x137\x137\x137"
+            b"\x137\x137\x137"
+            b"\x137\x137\x137"
+            b"\x137\x137\x137"
+            b"\x137\x137\x137"
+            b"\x137\x137\x137"
+            b"\x137\x137\x137"
+            b"\x137\x137\x137"
+            b"\x137\x137\x137"
+            b"\x137\x137\x137"
+            b"\x137\x137\x137"
+            b"\x137\x137\x137"
+            b"\x137\x137\x137"
+            b"\x137\x137\x137"
+        ),
+        call()
+        .__enter__()
+        .send(
+            b"\xff\xff\xff\xff\xff\xff"
+            b"\x00\x00\x00\x00\x00\x00"
+            b"\x00\x00\x00\x00\x00\x00"
+            b"\x00\x00\x00\x00\x00\x00"
+            b"\x00\x00\x00\x00\x00\x00"
+            b"\x00\x00\x00\x00\x00\x00"
+            b"\x00\x00\x00\x00\x00\x00"
+            b"\x00\x00\x00\x00\x00\x00"
+            b"\x00\x00\x00\x00\x00\x00"
+            b"\x00\x00\x00\x00\x00\x00"
+            b"\x00\x00\x00\x00\x00\x00"
+            b"\x00\x00\x00\x00\x00\x00"
+            b"\x00\x00\x00\x00\x00\x00"
+            b"\x00\x00\x00\x00\x00\x00"
+            b"\x00\x00\x00\x00\x00\x00"
+            b"\x00\x00\x00\x00\x00\x00"
+            b"\x00\x00\x00\x00\x00\x00"
+        ),
+        call().__exit__(None, None, None),
+    ]
+
+
 @patch("wakeonlan.send_magic_packet")
 def test_main(send_magic_packet: Mock) -> None:
     """
@@ -215,6 +280,13 @@ def test_main(send_magic_packet: Mock) -> None:
 
     """
     main(["00:11:22:33:44:55", "-i", "host.example", "-p", "1337"])
+    main(["00:11:22:33:44:55", "-i", "host.example", "-p", "1337", "-n", "192.168.0.2"])
     assert send_magic_packet.mock_calls == [
-        call("00:11:22:33:44:55", ip_address="host.example", port=1337,)
+        call("00:11:22:33:44:55", ip_address="host.example", port=1337, interface=None),
+        call(
+            "00:11:22:33:44:55",
+            ip_address="host.example",
+            port=1337,
+            interface="192.168.0.2",
+        ),
     ]
