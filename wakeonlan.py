@@ -95,7 +95,7 @@ def main(argv: List[str] = None) -> None:
     parser.add_argument(
         "-n",
         metavar="interface",
-        default=DEFAULT_INTERFACE,
+        default=None,
         help="The ip address of the network adapter to route the magic packet through.",
     )
     args = parser.parse_args(argv)
