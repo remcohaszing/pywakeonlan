@@ -10,7 +10,6 @@ from typing import List
 
 BROADCAST_IP = "255.255.255.255"
 DEFAULT_PORT = 9
-DEFAULT_INTERFACE = None
 
 
 def create_magic_packet(macaddress: str) -> bytes:
@@ -38,7 +37,7 @@ def send_magic_packet(
     *macs: str,
     ip_address: str = BROADCAST_IP,
     port: int = DEFAULT_PORT,
-    interface: str = DEFAULT_INTERFACE
+    interface: str = None
 ) -> None:
     """
     Wake up computers having any of the given mac addresses.

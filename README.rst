@@ -68,8 +68,7 @@ required. The default ip address is 255.255.255.255 and the default port is 9.
 A network adapter may be specified. The magic packet will be routed through this interface.
 
 >>> send_magic_packet('ff.ff.ff.ff.ff.ff',
-...                    interface='192.168.0.2')
-
+...                   interface='192.168.0.2')
 
 
 As a standalone script
@@ -77,7 +76,7 @@ As a standalone script
 
 ::
 
-    usage: wakeonlan.py [-h] [-i ip] [-p port] [-n interface] mac address [mac address ...]
+    usage: wakeonlan [-h] [-i ip] [-p port] [-n interface] mac address [mac address ...]
 
     Wake one or more computers using the wake on lan protocol.
 
