@@ -65,22 +65,29 @@ required. The default ip address is 255.255.255.255 and the default port is 9.
 ...                   port=1337)
 
 
+A network adapter may be specified. The magic packet will be routed through this interface.
+
+>>> send_magic_packet('ff.ff.ff.ff.ff.ff',
+...                   interface='192.168.0.2')
+
+
 As a standalone script
 ======================
 
 ::
 
-    usage: wakeonlan [-h] [-i ip] [-p port] mac address [mac address ...]
+    usage: wakeonlan [-h] [-i ip] [-p port] [-n interface] mac address [mac address ...]
 
     Wake one or more computers using the wake on lan protocol.
 
     positional arguments:
-      mac address  The mac addresses or of the computers you are trying to wake.
+      mac address  The mac addresses of the computers you are trying to wake.
 
     optional arguments:
       -h, --help   show this help message and exit
       -i ip        The ip address of the host to send the magic packet to. (default 255.255.255.255)
       -p port      The port of the host to send the magic packet to. (default 9)
+      -n interface The ip address of the network adapter to route the magic packet through. (optional)
 
 
 ************

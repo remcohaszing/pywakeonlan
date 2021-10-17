@@ -34,7 +34,10 @@ def create_magic_packet(macaddress: str) -> bytes:
 
 
 def send_magic_packet(
-    *macs: str, ip_address: str = BROADCAST_IP, port: int = DEFAULT_PORT
+    *macs: str,
+    ip_address: str = BROADCAST_IP,
+    port: int = DEFAULT_PORT,
+    interface: str = None
 ) -> None:
     """
     Wake up computers having any of the given mac addresses.
@@ -47,11 +50,14 @@ def send_magic_packet(
     Keyword Args:
         ip_address: the ip address of the host to send the magic packet to.
         port: the port of the host to send the magic packet to.
+        interface: the ip address of the network adapter to route the magic packet through.
 
     """
     packets = [create_magic_packet(mac) for mac in macs]
 
     with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as sock:
+        if interface is not None:
+            sock.bind((interface, 0))
         sock.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
         sock.connect((ip_address, port))
         for packet in packets:
@@ -71,7 +77,7 @@ def main(argv: List[str] = None) -> None:
         "macs",
         metavar="mac address",
         nargs="+",
-        help="The mac addresses or of the computers you are trying to wake.",
+        help="The mac addresses of the computers you are trying to wake.",
     )
     parser.add_argument(
         "-i",
@@ -86,8 +92,14 @@ def main(argv: List[str] = None) -> None:
         default=DEFAULT_PORT,
         help="The port of the host to send the magic packet to.",
     )
+    parser.add_argument(
+        "-n",
+        metavar="interface",
+        default=None,
+        help="The ip address of the network adapter to route the magic packet through.",
+    )
     args = parser.parse_args(argv)
-    send_magic_packet(*args.macs, ip_address=args.i, port=args.p)
+    send_magic_packet(*args.macs, ip_address=args.i, port=args.p, interface=args.n)
 
 
 if __name__ == "__main__":  # pragma: nocover
