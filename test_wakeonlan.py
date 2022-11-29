@@ -98,9 +98,8 @@ from wakeonlan import send_magic_packet
             b"\xff\xff\xff\xff\xff\xff"
             b"\xff\xff\xff\xff\xff\xff",
         ),
-
     ],
-    ids=["no separator", "colons", "hyphens"],
+    ids=["no separator", "colons", "hyphens", "dots"],
 )
 def test_create_magic_packet(mac: str, packet: List[int]) -> None:
     """
