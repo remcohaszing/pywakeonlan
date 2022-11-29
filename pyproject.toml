@@ -14,6 +14,11 @@ classifiers = [
     "Topic :: System :: Networking"
 ]
 
+[tool.poetry.urls]
+Changelog = "https://github.com/remcohaszing/pywakeonlan/releases"
+Issues = "https://github.com/remcohaszing/pywakeonlan/issues"
+Sponsor = "https://github.com/sponsors/remcohaszing"
+
 [tool.poetry.scripts]
 wakeonlan = "wakeonlan:main"
 
