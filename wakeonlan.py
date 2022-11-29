@@ -32,10 +32,7 @@ def create_magic_packet(macaddress: str) -> bytes:
         macaddress = macaddress.replace(sep, "")
     if len(macaddress) != 12:
         raise ValueError("Incorrect MAC address format")
-    try:
-        return bytes.fromhex("F" * 12 + macaddress * 16)
-    except ValueError:
-        raise ValueError(f"Invalid character in MAC address: {macaddress}")
+    return bytes.fromhex("F" * 12 + macaddress * 16)
 
 
 def send_magic_packet(
