@@ -28,9 +28,11 @@ def create_magic_packet(macaddress: str) -> bytes:
     if len(macaddress) == 17:
         sep = macaddress[2]
         macaddress = macaddress.replace(sep, "")
-    elif len(macaddress) != 12:
+    elif len(macaddress) == 14:
+        sep = macaddress[4]
+        macaddress = macaddress.replace(sep, "")
+    if len(macaddress) != 12:
         raise ValueError("Incorrect MAC address format")
-
     return bytes.fromhex("F" * 12 + macaddress * 16)
 
 
