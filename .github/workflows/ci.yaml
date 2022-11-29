@@ -10,20 +10,24 @@ jobs:
   black:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-python@v2
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
       - run: pip install poetry
       - run: poetry install
-      - run: poetry run flake8
+      - run: poetry run black --check .
 
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-python@v2
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
       - run: pip install poetry
       - run: poetry build
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         with:
           name: dist
           path: dist/
@@ -31,8 +35,10 @@ jobs:
   flake8:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-python@v2
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
       - run: pip install poetry
       - run: poetry install
       - run: poetry run flake8
@@ -40,8 +46,10 @@ jobs:
   mypy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-python@v2
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
       - run: pip install poetry
       - run: poetry install
       - run: poetry run mypy .
@@ -51,27 +59,27 @@ jobs:
     strategy:
       matrix:
         python-version:
-          - 3.6
-          - 3.7
-          - 3.8
-          - 3.9
+          - '3.7'
+          - '3.8'
+          - '3.9'
+          - '3.10'
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-python@v2
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python-version }}
       - run: pip install poetry
       - run: poetry install
       - run: poetry run pytest --cov --cov-report=xml
-      - uses: codecov/codecov-action@v1
-        if: ${{ matrix.python-version == 3.8 }}
+      - uses: codecov/codecov-action@v3
+        if: ${{ matrix.python-version == '3.10' }}
 
   publish:
     runs-on: ubuntu-latest
     needs: [black, build, flake8, mypy, pytest]
     if: startsWith(github.ref, 'refs/tags/')
     steps:
-      - uses: actions/download-artifact@v2
+      - uses: actions/download-artifact@v3
         with: 
           name: dist
           path: dist/
