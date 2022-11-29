@@ -25,7 +25,15 @@ wakeonlan
 A small python module for wake on lan.
 
 For more information on the wake on lan protocol please take a look at
-Wikipedia_.
+`Wikipedia <http://en.wikipedia.org/wiki/Wake-on-LAN>`_.
+
+************
+Installation
+************
+
+::
+
+    pip install wakeonlan
 
 
 *****
@@ -53,7 +61,8 @@ Wake up a single computer by its mac address
 
 Wake up multiple computers by their mac addresses.
 
->>> send_magic_packet('ff.ff.ff.ff.ff.ff', '00-00-00-00-00-00',
+>>> send_magic_packet('ff.ff.ff.ff.ff.ff',
+...                   '00-00-00-00-00-00',
 ...                   'FFFFFFFFFFFF')
 
 
@@ -94,15 +103,11 @@ As a standalone script
 Dependencies
 ************
 
-- Python3.x
+- Python 3.x
 
 
 *******
 License
 *******
 
-MIT
-
-
-.. _GitHub: https://github.com/remcohaszing/pywakeonlan
-.. _Wikipedia: http://en.wikipedia.org/wiki/Wake-on-LAN
+`MIT <https://github.com/remcohaszing/pywakeonlan/blob/main/LICENSE.rst>`_ © `Remco Haszing <https://github.com/remcohaszing>`_
