@@ -11,7 +11,8 @@ classifiers = [
     "Development Status :: 5 - Production/Stable",
     "Intended Audience :: Developers",
     "Intended Audience :: System Administrators",
-    "Topic :: System :: Networking"
+    "Topic :: System :: Networking",
+    "Typing :: Typed"
 ]
 
 [tool.poetry.urls]
