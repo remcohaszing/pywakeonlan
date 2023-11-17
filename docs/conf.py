@@ -24,6 +24,8 @@ intersphinx_mapping = {
     "python": ("https://docs.python.org/3.11", None),
 }
 
+nitpick_ignore = [("py:class", "socket.AddressFamily")]
+
 nitpicky = True
 
 default_role = "any"
