@@ -293,6 +293,131 @@ def test_send_magic_packet_interface(sock: Mock) -> None:
     ]
 
 
+@patch("socket.socket")
+def test_send_correct_af_chosen_with_ipv6_address(sock: Mock) -> None:
+    """
+    Test whether AF_INET6 automatically chosen when the `address_family` argument is not given.
+    """
+    send_magic_packet(
+        "133713371337",
+        "00-00-00-00-00-00",
+        ip_address="fc00::",
+        port=7,
+    )
+    assert sock.mock_calls == [
+        call(socket.AF_INET6, socket.SOCK_DGRAM),
+        call().__enter__(),
+        call().__enter__().setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1),
+        call().__enter__().connect(("fc00::", 7)),
+        call()
+        .__enter__()
+        .send(
+            b"\xff\xff\xff\xff\xff\xff"
+            b"\x137\x137\x137"
+            b"\x137\x137\x137"
+            b"\x137\x137\x137"
+            b"\x137\x137\x137"
+            b"\x137\x137\x137"
+            b"\x137\x137\x137"
+            b"\x137\x137\x137"
+            b"\x137\x137\x137"
+            b"\x137\x137\x137"
+            b"\x137\x137\x137"
+            b"\x137\x137\x137"
+            b"\x137\x137\x137"
+            b"\x137\x137\x137"
+            b"\x137\x137\x137"
+            b"\x137\x137\x137"
+            b"\x137\x137\x137"
+        ),
+        call()
+        .__enter__()
+        .send(
+            b"\xff\xff\xff\xff\xff\xff"
+            b"\x00\x00\x00\x00\x00\x00"
+            b"\x00\x00\x00\x00\x00\x00"
+            b"\x00\x00\x00\x00\x00\x00"
+            b"\x00\x00\x00\x00\x00\x00"
+            b"\x00\x00\x00\x00\x00\x00"
+            b"\x00\x00\x00\x00\x00\x00"
+            b"\x00\x00\x00\x00\x00\x00"
+            b"\x00\x00\x00\x00\x00\x00"
+            b"\x00\x00\x00\x00\x00\x00"
+            b"\x00\x00\x00\x00\x00\x00"
+            b"\x00\x00\x00\x00\x00\x00"
+            b"\x00\x00\x00\x00\x00\x00"
+            b"\x00\x00\x00\x00\x00\x00"
+            b"\x00\x00\x00\x00\x00\x00"
+            b"\x00\x00\x00\x00\x00\x00"
+            b"\x00\x00\x00\x00\x00\x00"
+        ),
+        call().__exit__(None, None, None),
+    ]
+
+
+@patch("socket.socket")
+def test_send_with_explicit_ipv6_address(sock: Mock) -> None:
+    """
+    Test whether the given address family is used instead automatically it automatically.
+    """
+    send_magic_packet(
+        "133713371337",
+        "00-00-00-00-00-00",
+        ip_address="example.com",
+        port=7,
+        address_family=socket.AF_INET6,
+    )
+    assert sock.mock_calls == [
+        call(socket.AF_INET6, socket.SOCK_DGRAM),
+        call().__enter__(),
+        call().__enter__().setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1),
+        call().__enter__().connect(("example.com", 7)),
+        call()
+        .__enter__()
+        .send(
+            b"\xff\xff\xff\xff\xff\xff"
+            b"\x137\x137\x137"
+            b"\x137\x137\x137"
+            b"\x137\x137\x137"
+            b"\x137\x137\x137"
+            b"\x137\x137\x137"
+            b"\x137\x137\x137"
+            b"\x137\x137\x137"
+            b"\x137\x137\x137"
+            b"\x137\x137\x137"
+            b"\x137\x137\x137"
+            b"\x137\x137\x137"
+            b"\x137\x137\x137"
+            b"\x137\x137\x137"
+            b"\x137\x137\x137"
+            b"\x137\x137\x137"
+            b"\x137\x137\x137"
+        ),
+        call()
+        .__enter__()
+        .send(
+            b"\xff\xff\xff\xff\xff\xff"
+            b"\x00\x00\x00\x00\x00\x00"
+            b"\x00\x00\x00\x00\x00\x00"
+            b"\x00\x00\x00\x00\x00\x00"
+            b"\x00\x00\x00\x00\x00\x00"
+            b"\x00\x00\x00\x00\x00\x00"
+            b"\x00\x00\x00\x00\x00\x00"
+            b"\x00\x00\x00\x00\x00\x00"
+            b"\x00\x00\x00\x00\x00\x00"
+            b"\x00\x00\x00\x00\x00\x00"
+            b"\x00\x00\x00\x00\x00\x00"
+            b"\x00\x00\x00\x00\x00\x00"
+            b"\x00\x00\x00\x00\x00\x00"
+            b"\x00\x00\x00\x00\x00\x00"
+            b"\x00\x00\x00\x00\x00\x00"
+            b"\x00\x00\x00\x00\x00\x00"
+            b"\x00\x00\x00\x00\x00\x00"
+        ),
+        call().__exit__(None, None, None),
+    ]
+
+
 @patch("wakeonlan.send_magic_packet")
 def test_main(send_magic_packet: Mock) -> None:
     """
@@ -301,12 +426,27 @@ def test_main(send_magic_packet: Mock) -> None:
     """
     main(["00:11:22:33:44:55", "-i", "host.example", "-p", "1337"])
     main(["00:11:22:33:44:55", "-i", "host.example", "-p", "1337", "-n", "192.168.0.2"])
+    main(["00:11:22:33:44:55", "-i", "host.example", "-p", "1337", "-6"])
     assert send_magic_packet.mock_calls == [
-        call("00:11:22:33:44:55", ip_address="host.example", port=1337, interface=None),
+        call(
+            "00:11:22:33:44:55",
+            ip_address="host.example",
+            port=1337,
+            interface=None,
+            address_family=None,
+        ),
         call(
             "00:11:22:33:44:55",
             ip_address="host.example",
             port=1337,
             interface="192.168.0.2",
+            address_family=None,
+        ),
+        call(
+            "00:11:22:33:44:55",
+            ip_address="host.example",
+            port=1337,
+            interface=None,
+            address_family=socket.AF_INET6,
         ),
     ]
