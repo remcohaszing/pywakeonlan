@@ -34,8 +34,6 @@ flake8-import-order = { version = "*", python = ">= 3.8" }
 mypy = { version = "*", python = ">=3.8" }
 pytest = "*"
 pytest-cov = "*"
-sphinx = { version = "*", python = ">=3.8" }
-sphinx-rtd-theme = { version = "*", python = ">=3.8" }
 types-setuptools = { version = "*", python = ">=3.8" }
 
 [tool.coverage.run]
