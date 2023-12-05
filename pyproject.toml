@@ -28,16 +28,16 @@ python = "^3.7"
 
 [tool.poetry.dev-dependencies]
 black = { version = "*", python = ">= 3.8" }
+coverage = { version = "*", extras = ["toml"] }
 flake8 = { version = "*", python = ">= 3.8" }
 flake8-docstrings = { version = "*", python = ">= 3.8" }
 flake8-import-order = { version = "*", python = ">= 3.8" }
 mypy = { version = "*", python = ">=3.8" }
-pytest = "*"
-pytest-cov = "*"
 types-setuptools = { version = "*", python = ">=3.8" }
 
 [tool.coverage.run]
 branch = true
+command_line = "-m unittest -v"
 source = ["wakeonlan"]
 
 [tool.coverage.report]
