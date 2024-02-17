@@ -27,12 +27,9 @@ wakeonlan = "wakeonlan:main"
 python = "^3.7"
 
 [tool.poetry.dev-dependencies]
-black = { version = "*", python = ">= 3.8" }
 coverage = { version = "*", extras = ["toml"] }
-flake8 = { version = "*", python = ">= 3.8" }
-flake8-docstrings = { version = "*", python = ">= 3.8" }
-flake8-import-order = { version = "*", python = ">= 3.8" }
 mypy = { version = "*", python = ">=3.8" }
+ruff = { version = "*", python = ">=3.8" }
 types-setuptools = { version = "*", python = ">=3.8" }
 
 [tool.coverage.run]
@@ -52,6 +49,19 @@ disallow_untyped_defs = true
 ignore_missing_imports = true
 strict_optional = true
 warn_return_any = true
+
+[tool.ruff.format]
+quote-style = "single"
+
+[tool.ruff.lint]
+select = ["D", "E", "F", "I", "N", "W"]
+ignore = ["D200", "D212", "E501", "W505"]
+
+[tool.ruff.lint.isort]
+lines-after-imports = 2
+
+[tool.ruff.lint.pydocstyle]
+convention = "google"
 
 [build-system]
 requires = ["poetry-core"]
