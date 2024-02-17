@@ -123,6 +123,14 @@ class TestCreateMagicPacket(unittest.TestCase):
             b'\xff\xff\xff\xff\xff\xff',
         )
 
+    def test_invalid(self) -> None:
+        """
+        Test an invalid mac address.
+
+        """
+        with self.assertRaises(ValueError):
+            create_magic_packet('invalid')
+
 
 class TestSendMagicPacket(unittest.TestCase):
     """
