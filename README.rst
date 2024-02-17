@@ -85,18 +85,20 @@ As a standalone script
 
 ::
 
-    usage: wakeonlan [-h] [-i ip] [-p port] [-n interface] mac address [mac address ...]
+    usage: wakeonlan [-h] [-6] [-i IP] [-p PORT] [-n INTERFACE] mac address [mac address ...]
 
     Wake one or more computers using the wake on lan protocol.
 
     positional arguments:
-      mac address  The mac addresses of the computers you are trying to wake.
+      mac address           The mac addresses of the computers you are trying to wake.
 
-    optional arguments:
-      -h, --help   show this help message and exit
-      -i ip        The ip address of the host to send the magic packet to. (default 255.255.255.255)
-      -p port      The port of the host to send the magic packet to. (default 9)
-      -n interface The ip address of the network adapter to route the magic packet through. (optional)
+    options:
+      -h, --help            show this help message and exit
+      -6, --ipv6            To indicate if ipv6 should be used by default instead of ipv4. (default: False)
+      -i IP, --ip IP        The ip address of the host to send the magic packet to. (default: 255.255.255.255)
+      -p PORT, --port PORT  The port of the host to send the magic packet to. (default: 9)
+      -n INTERFACE, --interface INTERFACE
+                            The ip address of the network adapter to route the magic packet through. (default: None)
 
 
 ************

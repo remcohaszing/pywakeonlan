@@ -102,36 +102,36 @@ def main(argv: typing.Optional[typing.List[str]] = None) -> None:
     )
     parser.add_argument(
         '-6',
-        dest='use_ipv6',
+        '--ipv6',
         action='store_true',
         help='To indicate if ipv6 should be used by default instead of ipv4.',
     )
     parser.add_argument(
         '-i',
-        metavar='ip',
+        '--ip',
         default=BROADCAST_IP,
         help='The ip address of the host to send the magic packet to.',
     )
     parser.add_argument(
         '-p',
-        metavar='port',
+        '--port',
         type=int,
         default=DEFAULT_PORT,
         help='The port of the host to send the magic packet to.',
     )
     parser.add_argument(
         '-n',
-        metavar='interface',
-        default=None,
+        '--interface',
         help='The ip address of the network adapter to route the magic packet through.',
     )
     args = parser.parse_args(argv)
+    print(args)
     send_magic_packet(
         *args.macs,
-        ip_address=args.i,
-        port=args.p,
-        interface=args.n,
-        address_family=socket.AF_INET6 if args.use_ipv6 else None,
+        ip_address=args.ip,
+        port=args.port,
+        interface=args.interface,
+        address_family=socket.AF_INET6 if args.ipv6 else None,
     )
 
 
