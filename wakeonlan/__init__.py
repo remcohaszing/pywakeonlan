@@ -125,7 +125,6 @@ def main(argv: typing.Optional[typing.List[str]] = None) -> None:
         help='The ip address of the network adapter to route the magic packet through.',
     )
     args = parser.parse_args(argv)
-    print(args)
     send_magic_packet(
         *args.macs,
         ip_address=args.ip,
