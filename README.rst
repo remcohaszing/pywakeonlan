@@ -67,12 +67,19 @@ Wake up multiple computers by their mac addresses.
 
 
 An external host may be specified. Do note that port forwarding on that host is
-required. The default ip address is 255.255.255.255 and the default port is 9.
+required. The default ip address is 255.255.255.255 and the default port is 9 .
 
 >>> send_magic_packet('ff.ff.ff.ff.ff.ff',
 ...                   ip_address='example.com',
 ...                   port=1337)
 
+
+You may want to increase/decrease the TTL value in case of routed subnets. Default TTL value is 128
+
+>>> send_magic_packet('de.ad.be.ef.ff.ff',
+...                   ip_address='192.168.1.1',
+...                   ttl=200,
+...                   port=9)
 
 A network adapter may be specified. The magic packet will be routed through this interface.
 
@@ -85,7 +92,7 @@ As a standalone script
 
 ::
 
-    usage: wakeonlan [-h] [-6] [-i IP] [-p PORT] [-n INTERFACE] mac address [mac address ...]
+    usage: wakeonlan [-h] [-6] [-i IP] [-p PORT] [-t TTL] [-n INTERFACE] mac address [mac address ...]
 
     Wake one or more computers using the wake on lan protocol.
 
@@ -97,6 +104,7 @@ As a standalone script
       -6, --ipv6            To indicate if ipv6 should be used by default instead of ipv4. (default: False)
       -i IP, --ip IP        The ip address of the host to send the magic packet to. (default: 255.255.255.255)
       -p PORT, --port PORT  The port of the host to send the magic packet to. (default: 9)
+      -t TTL, --ttl TTL     The TTL value of the broadcast packet. (min: 1, max: 255, default: 128)
       -n INTERFACE, --interface INTERFACE
                             The ip address of the network adapter to route the magic packet through. (default: None)
 

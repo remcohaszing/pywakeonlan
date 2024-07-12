@@ -9,11 +9,12 @@ import socket
 import typing
 
 
-BROADCAST_IP = '255.255.255.255'
-DEFAULT_PORT = 9
+BROADCAST_IP: str = '255.255.255.255'
+DEFAULT_PORT: int = 9
+DEFAULT_TTL: int = 128
 
 
-def create_magic_packet(macaddress: str) -> bytes:
+def create_magic_packet(mac_address: str) -> bytes:
     """
     Create a magic packet.
 
@@ -22,34 +23,36 @@ def create_magic_packet(macaddress: str) -> bytes:
     mac address given as a parameter.
 
     Args:
-        macaddress: the mac address that should be parsed into a magic packet.
+        mac_address: the mac address that should be parsed into a magic packet.
 
     """
-    if len(macaddress) == 17:
-        sep = macaddress[2]
-        macaddress = macaddress.replace(sep, '')
-    elif len(macaddress) == 14:
-        sep = macaddress[4]
-        macaddress = macaddress.replace(sep, '')
-    if len(macaddress) != 12:
+    if len(mac_address) == 17:
+        sep = mac_address[2]
+        mac_address = mac_address.replace(sep, '')
+    elif len(mac_address) == 14:
+        sep = mac_address[4]
+        mac_address = mac_address.replace(sep, '')
+    if len(mac_address) != 12:
         raise ValueError('Incorrect MAC address format')
-    return bytes.fromhex('F' * 12 + macaddress * 16)
+
+    return bytes.fromhex('F' * 12 + mac_address * 16)
 
 
 def send_magic_packet(
-    *macs: str,
-    ip_address: str = BROADCAST_IP,
-    port: int = DEFAULT_PORT,
-    interface: typing.Optional[str] = None,
-    address_family: typing.Optional[socket.AddressFamily] = None,
-) -> None:
+        *macs: str,
+        ip_address: str = BROADCAST_IP,
+        port: int = DEFAULT_PORT,
+        ttl: int = DEFAULT_TTL,
+        interface: typing.Optional[str] = None,
+        address_family: typing.Optional[socket.AddressFamily] = None,
+        ) -> None:
     """
     Wake up computers having any of the given mac addresses.
 
     Wake on lan must be enabled on the host device.
 
     Args:
-        macs: One or more macaddresses of machines to wake.
+        macs: One or more mac-addresses of machines to wake.
 
     Keyword Args:
         ip_address: the ip address of the host to send the magic packet
@@ -58,11 +61,11 @@ def send_magic_packet(
         interface: the ip address of the network adapter to route the
             magic packet through.
         address_family: the address family of the ip address to initiate
-            connection with. When not specificied, chosen automatically
+            connection with. When not specified, chosen automatically
             between IPv4 and IPv6.
 
     """
-    packets = [create_magic_packet(mac) for mac in macs]
+    packets: list[bytes] = [create_magic_packet(mac_address=mac) for mac in macs]
 
     if address_family is None:
         address_family = (
@@ -72,8 +75,10 @@ def send_magic_packet(
     with socket.socket(address_family, socket.SOCK_DGRAM) as sock:
         if interface is not None:
             sock.bind((interface, 0))
-        sock.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
+
+        sock.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, ttl)
         sock.connect((ip_address, port))
+
         for packet in packets:
             sock.send(packet)
 
@@ -81,8 +86,21 @@ def send_magic_packet(
 def _is_ipv6_address(ip_address: str) -> bool:
     try:
         return isinstance(ipaddress.ip_address(ip_address), ipaddress.IPv6Address)
+
     except ValueError:
         return False
+
+
+def ttl_validator(ttl_value: str) -> int:
+    try:
+        result: int = int(ttl_value)
+        if not (1 <= result <= 255):
+            raise argparse.ArgumentTypeError("TTL value must be between 1 and 255")
+
+        return result
+
+    except ValueError:
+        raise argparse.ArgumentTypeError("TTL value must be an integer")
 
 
 def main(argv: typing.Optional[typing.List[str]] = None) -> None:
@@ -110,25 +128,33 @@ def main(argv: typing.Optional[typing.List[str]] = None) -> None:
         '-i',
         '--ip',
         default=BROADCAST_IP,
-        help='The ip address of the host to send the magic packet to.',
+        help='The ip address of the host to send the magic packet to. (default: 255.255.255.255)',
     )
     parser.add_argument(
         '-p',
         '--port',
         type=int,
         default=DEFAULT_PORT,
-        help='The port of the host to send the magic packet to.',
+        help='The port of the host to send the magic packet to. (default: 9)',
     )
     parser.add_argument(
         '-n',
         '--interface',
         help='The ip address of the network adapter to route the magic packet through.',
     )
+    parser.add_argument(
+        '-t',
+        '--ttl',
+        type=ttl_validator,
+        default=DEFAULT_TTL,
+        help='The TTL (time-to-live) value of the broadcast packet. (min: 1, max: 255, default: 128)',
+    )
     args = parser.parse_args(argv)
     send_magic_packet(
         *args.macs,
         ip_address=args.ip,
         port=args.port,
+        ttl=args.ttl,
         interface=args.interface,
         address_family=socket.AF_INET6 if args.ipv6 else None,
     )
