@@ -58,6 +58,7 @@ def send_magic_packet(
         ip_address: the ip address of the host to send the magic packet
             to.
         port: the port of the host to send the magic packet to.
+        ttl: the ttl value to be set in the broadcast packet
         interface: the ip address of the network adapter to route the
             magic packet through.
         address_family: the address family of the ip address to initiate
