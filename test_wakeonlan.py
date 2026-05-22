@@ -123,14 +123,133 @@ class TestCreateMagicPacket(unittest.TestCase):
             b'\xff\xff\xff\xff\xff\xff',
         )
 
-    def test_invalid(self) -> None:
+    def test_invalid_mac(self) -> None:
         """
         Test an invalid mac address.
 
         """
-        with self.assertRaises(ValueError):
+        with self.assertRaises(ValueError, msg='Incorrect MAC address format'):
             create_magic_packet('invalid')
 
+    def test_mac_secureon_no_separators(self) -> None:
+        """
+        Test with an additional SecureON password without separators.
+
+        """
+        result = create_magic_packet('01:23:45:67:89:ab/ffffffffffff')
+        self.assertEqual(
+            result,
+            b'\xff\xff\xff\xff\xff\xff'
+            b'\x01#Eg\x89\xab'
+            b'\x01#Eg\x89\xab'
+            b'\x01#Eg\x89\xab'
+            b'\x01#Eg\x89\xab'
+            b'\x01#Eg\x89\xab'
+            b'\x01#Eg\x89\xab'
+            b'\x01#Eg\x89\xab'
+            b'\x01#Eg\x89\xab'
+            b'\x01#Eg\x89\xab'
+            b'\x01#Eg\x89\xab'
+            b'\x01#Eg\x89\xab'
+            b'\x01#Eg\x89\xab'
+            b'\x01#Eg\x89\xab'
+            b'\x01#Eg\x89\xab'
+            b'\x01#Eg\x89\xab'
+            b'\x01#Eg\x89\xab'
+            b'\xff\xff\xff\xff\xff\xff',
+        )
+
+    def test_mac_secureon_colon(self) -> None:
+        """
+        Test with an additional SecureON password with colons as separators.
+
+        """
+        result = create_magic_packet('01:23:45:67:89:ab/ff:ff:ff:ff:ff:ff')
+        self.assertEqual(
+            result,
+            b'\xff\xff\xff\xff\xff\xff'
+            b'\x01#Eg\x89\xab'
+            b'\x01#Eg\x89\xab'
+            b'\x01#Eg\x89\xab'
+            b'\x01#Eg\x89\xab'
+            b'\x01#Eg\x89\xab'
+            b'\x01#Eg\x89\xab'
+            b'\x01#Eg\x89\xab'
+            b'\x01#Eg\x89\xab'
+            b'\x01#Eg\x89\xab'
+            b'\x01#Eg\x89\xab'
+            b'\x01#Eg\x89\xab'
+            b'\x01#Eg\x89\xab'
+            b'\x01#Eg\x89\xab'
+            b'\x01#Eg\x89\xab'
+            b'\x01#Eg\x89\xab'
+            b'\x01#Eg\x89\xab'
+            b'\xff\xff\xff\xff\xff\xff',
+        )
+
+    def test_mac_secureon_hyphen(self) -> None:
+        """
+        Test with an additional SecureON password with hyphens as separators.
+
+        """
+        result = create_magic_packet('01:23:45:67:89:ab/ff-ff-ff-ff-ff-ff')
+        self.assertEqual(
+            result,
+            b'\xff\xff\xff\xff\xff\xff'
+            b'\x01#Eg\x89\xab'
+            b'\x01#Eg\x89\xab'
+            b'\x01#Eg\x89\xab'
+            b'\x01#Eg\x89\xab'
+            b'\x01#Eg\x89\xab'
+            b'\x01#Eg\x89\xab'
+            b'\x01#Eg\x89\xab'
+            b'\x01#Eg\x89\xab'
+            b'\x01#Eg\x89\xab'
+            b'\x01#Eg\x89\xab'
+            b'\x01#Eg\x89\xab'
+            b'\x01#Eg\x89\xab'
+            b'\x01#Eg\x89\xab'
+            b'\x01#Eg\x89\xab'
+            b'\x01#Eg\x89\xab'
+            b'\x01#Eg\x89\xab'
+            b'\xff\xff\xff\xff\xff\xff',
+        )
+
+    def test_mac_secureon_dot(self) -> None:
+        """
+        Test with an additional SecureON password with dots as separators.
+
+        """
+        result = create_magic_packet('01:23:45:67:89:ab/ffff.ffff.ffff')
+        self.assertEqual(
+            result,
+            b'\xff\xff\xff\xff\xff\xff'
+            b'\x01#Eg\x89\xab'
+            b'\x01#Eg\x89\xab'
+            b'\x01#Eg\x89\xab'
+            b'\x01#Eg\x89\xab'
+            b'\x01#Eg\x89\xab'
+            b'\x01#Eg\x89\xab'
+            b'\x01#Eg\x89\xab'
+            b'\x01#Eg\x89\xab'
+            b'\x01#Eg\x89\xab'
+            b'\x01#Eg\x89\xab'
+            b'\x01#Eg\x89\xab'
+            b'\x01#Eg\x89\xab'
+            b'\x01#Eg\x89\xab'
+            b'\x01#Eg\x89\xab'
+            b'\x01#Eg\x89\xab'
+            b'\x01#Eg\x89\xab'
+            b'\xff\xff\xff\xff\xff\xff',
+        )
+
+    def test_invalid_secureon(self) -> None:
+        """
+        Test an invalid SecureON password.
+
+        """
+        with self.assertRaises(ValueError, msg='Incorrect SecureOn password format'):
+            create_magic_packet('01:23:45:67:89:ab/invalid')
 
 class TestSendMagicPacket(unittest.TestCase):
     """
@@ -461,6 +580,49 @@ class TestSendMagicPacket(unittest.TestCase):
                     b'\x00\x00\x00\x00\x00\x00'
                     b'\x00\x00\x00\x00\x00\x00'
                     b'\x00\x00\x00\x00\x00\x00'
+                ),
+                mock.call().__exit__(None, None, None),
+            ],
+        )
+
+    @mock.patch('socket.socket')
+    def test_send_magic_packet_secureon(self, sock: mock.Mock) -> None:
+        """
+        Test whether the magic packets are broadcasted using default
+        values with a SecureOn password.
+
+        """
+        send_magic_packet('01:23:45:67:89:ab/ff:ff:ff:ff:ff:ff')
+        self.assertEqual(
+            sock.mock_calls,
+            [
+                mock.call(socket.AF_INET, socket.SOCK_DGRAM),
+                mock.call().__enter__(),
+                mock.call()
+                .__enter__()
+                .setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1),
+                mock.call().__enter__().connect(('255.255.255.255', 9)),
+                mock.call()
+                .__enter__()
+                .send(
+                    b'\xff\xff\xff\xff\xff\xff'
+                    b'\x01#Eg\x89\xab'
+                    b'\x01#Eg\x89\xab'
+                    b'\x01#Eg\x89\xab'
+                    b'\x01#Eg\x89\xab'
+                    b'\x01#Eg\x89\xab'
+                    b'\x01#Eg\x89\xab'
+                    b'\x01#Eg\x89\xab'
+                    b'\x01#Eg\x89\xab'
+                    b'\x01#Eg\x89\xab'
+                    b'\x01#Eg\x89\xab'
+                    b'\x01#Eg\x89\xab'
+                    b'\x01#Eg\x89\xab'
+                    b'\x01#Eg\x89\xab'
+                    b'\x01#Eg\x89\xab'
+                    b'\x01#Eg\x89\xab'
+                    b'\x01#Eg\x89\xab'
+                    b'\xff\xff\xff\xff\xff\xff'
                 ),
                 mock.call().__exit__(None, None, None),
             ],

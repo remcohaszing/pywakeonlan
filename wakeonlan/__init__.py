@@ -22,9 +22,14 @@ def create_magic_packet(macaddress: str) -> bytes:
     mac address given as a parameter.
 
     Args:
-        macaddress: the mac address that should be parsed into a magic packet.
+        macaddress: the mac address or a "mac address/secureon password" tuple
+            that should be parsed into a magic packet.
 
     """
+    secureon = ""
+    if "/" in macaddress:
+        (macaddress, secureon) = macaddress.split("/")
+
     if len(macaddress) == 17:
         sep = macaddress[2]
         macaddress = macaddress.replace(sep, '')
@@ -33,7 +38,18 @@ def create_magic_packet(macaddress: str) -> bytes:
         macaddress = macaddress.replace(sep, '')
     if len(macaddress) != 12:
         raise ValueError('Incorrect MAC address format')
-    return bytes.fromhex('F' * 12 + macaddress * 16)
+
+    if secureon:
+        if len(secureon) == 17:
+            sep = secureon[2]
+            secureon = secureon.replace(sep, '')
+        elif len(secureon) == 14:
+            sep = secureon[4]
+            secureon = secureon.replace(sep, '')
+        if len(secureon) != 12:
+            raise ValueError('Incorrect SecureOn password format')
+
+    return bytes.fromhex('F' * 12 + macaddress * 16 + secureon)
 
 
 def send_magic_packet(
@@ -49,7 +65,8 @@ def send_magic_packet(
     Wake on lan must be enabled on the host device.
 
     Args:
-        macs: One or more macaddresses of machines to wake.
+        macs: One or more mac addresses or "mac address/secureon password"
+            tuples of machines to wake.
 
     Keyword Args:
         ip_address: the ip address of the host to send the magic packet
@@ -98,7 +115,7 @@ def main(argv: typing.Optional[typing.List[str]] = None) -> None:
         'macs',
         metavar='mac address',
         nargs='+',
-        help='The mac addresses of the computers you are trying to wake.',
+        help='The mac addresses or "mac address/secureon password" tuples of the computers you are trying to wake.',
     )
     parser.add_argument(
         '-6',
