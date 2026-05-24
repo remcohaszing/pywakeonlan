@@ -58,6 +58,9 @@ Wake up a single computer by its mac address
 
 >>> send_magic_packet('ff.ff.ff.ff.ff.ff')
 
+Wake up a single computer by its mac address with a SecureOn password
+
+>>> send_magic_packet('ff.ff.ff.ff.ff.ff/01:23:45:67:89:ab')
 
 Wake up multiple computers by their mac addresses.
 
@@ -91,7 +94,7 @@ As a standalone script
    Wake one or more computers using the wake on lan protocol.
    
    positional arguments:
-     mac address           The mac addresses of the computers you are trying to wake.
+     mac address           The mac addresses or "mac address/secureon password" tuples of the computers you are trying to wake.
    
    options:
      -h, --help            show this help message and exit
