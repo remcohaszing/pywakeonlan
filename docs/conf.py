@@ -3,6 +3,7 @@ Configuration for the documentation generation.
 
 """
 
+import sys
 from importlib import metadata
 
 
@@ -20,7 +21,10 @@ extensions = [
 ]
 
 intersphinx_mapping = {
-    'python': ('https://docs.python.org/3.11', None),
+    'python': (
+        f'https://docs.python.org/{sys.version_info.major}.{sys.version_info.minor}',
+        None,
+    ),
 }
 
 nitpick_ignore = [('py:class', 'socket.AddressFamily')]
