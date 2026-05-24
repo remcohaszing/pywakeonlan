@@ -30,6 +30,8 @@ python = "^3.7"
 coverage = { version = "*", extras = ["toml"] }
 mypy = { version = "*", python = ">=3.8" }
 ruff = { version = "*", python = ">=3.8" }
+sphinx = { version = "*", python = ">=3.8" }
+sphinx-rtd-theme = { version = "*", python = ">=3.8" }
 
 [tool.coverage.run]
 branch = true
