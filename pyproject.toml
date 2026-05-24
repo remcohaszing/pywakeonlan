@@ -5,7 +5,7 @@ description = "A small python module for wake on lan."
 authors = ["Remco Haszing <remcohaszing@gmail.com>"]
 license = "MIT"
 readme = "README.rst"
-documentation = "http://wakeonlan.readthedocs.io"
+documentation = "http://pywakeonlan.readthedocs.io"
 repository = "https://github.com/remcohaszing/pywakeonlan"
 classifiers = [
     "Development Status :: 5 - Production/Stable",

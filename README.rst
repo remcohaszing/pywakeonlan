@@ -15,7 +15,7 @@ wakeonlan
    :alt: Build Status
 
 .. image:: https://readthedocs.org/projects/pywakeonlan/badge/?version=latest
-   :target: https://wakeonlan.readthedocs.io/en/latest
+   :target: https://pywakeonlan.readthedocs.io/en/latest
    :alt: Documentation Status
 
 .. image:: https://codecov.io/gh/remcohaszing/pywakeonlan/branch/master/graph/badge.svg
