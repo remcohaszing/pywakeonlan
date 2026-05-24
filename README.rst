@@ -31,9 +31,9 @@ For more information on the wake on lan protocol please take a look at
 Installation
 ************
 
-::
+.. code-block:: sh
 
-    pip install wakeonlan
+   pip install wakeonlan
 
 
 *****
@@ -83,22 +83,23 @@ A network adapter may be specified. The magic packet will be routed through this
 As a standalone script
 ======================
 
-::
+.. code-block:: console
 
-    usage: wakeonlan [-h] [-6] [-i IP] [-p PORT] [-n INTERFACE] mac address [mac address ...]
-
-    Wake one or more computers using the wake on lan protocol.
-
-    positional arguments:
-      mac address           The mac addresses of the computers you are trying to wake.
-
-    options:
-      -h, --help            show this help message and exit
-      -6, --ipv6            To indicate if ipv6 should be used by default instead of ipv4. (default: False)
-      -i IP, --ip IP        The ip address of the host to send the magic packet to. (default: 255.255.255.255)
-      -p PORT, --port PORT  The port of the host to send the magic packet to. (default: 9)
-      -n INTERFACE, --interface INTERFACE
-                            The ip address of the network adapter to route the magic packet through. (default: None)
+   $ wakeonlan --help
+   usage: wakeonlan [-h] [-6] [-i IP] [-p PORT] [-n INTERFACE] mac address [mac address ...]
+   
+   Wake one or more computers using the wake on lan protocol.
+   
+   positional arguments:
+     mac address           The mac addresses of the computers you are trying to wake.
+   
+   options:
+     -h, --help            show this help message and exit
+     -6, --ipv6            To indicate if ipv6 should be used by default instead of ipv4. (default: False)
+     -i IP, --ip IP        The ip address of the host to send the magic packet to. (default: 255.255.255.255)
+     -p PORT, --port PORT  The port of the host to send the magic packet to. (default: 9)
+     -n INTERFACE, --interface INTERFACE
+                           The ip address of the network adapter to route the magic packet through. (default: None)
 
 
 ************
