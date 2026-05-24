@@ -2,6 +2,7 @@
 Configuration for the documentation generation.
 
 """
+
 from importlib import metadata
 
 
