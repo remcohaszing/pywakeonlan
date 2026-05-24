@@ -2,14 +2,12 @@
 Configuration for the documentation generation.
 
 """
-import pkg_resources
+from importlib import metadata
 
 
 project = 'wakeonlan'
-_dist = pkg_resources.get_distribution(project)
-
-version = _dist.version
-release = _dist.version
+version = metadata.version(project)
+release = version
 copyright = '2012, Remco Haszing'
 
 
