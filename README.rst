@@ -18,7 +18,7 @@ wakeonlan
    :target: https://pywakeonlan.readthedocs.io/en/latest
    :alt: Documentation Status
 
-.. image:: https://codecov.io/gh/remcohaszing/pywakeonlan/branch/master/graph/badge.svg
+.. image:: https://codecov.io/gh/remcohaszing/pywakeonlan/branch/main/graph/badge.svg
    :target: https://codecov.io/gh/remcohaszing/pywakeonlan
    :alt: Code coverage
 
