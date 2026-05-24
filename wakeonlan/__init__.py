@@ -27,9 +27,9 @@ def create_magic_packet(macaddress: str) -> bytes:
             that should be parsed into a magic packet.
 
     """
-    secureon = ""
-    if "/" in macaddress:
-        (macaddress, secureon) = macaddress.split("/")
+    secureon = ''
+    if '/' in macaddress:
+        (macaddress, secureon) = macaddress.split('/')
 
     if len(macaddress) == 17:
         sep = macaddress[2]

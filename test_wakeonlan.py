@@ -252,6 +252,7 @@ class TestCreateMagicPacket(unittest.TestCase):
         with self.assertRaises(ValueError, msg='Incorrect SecureOn password format'):
             create_magic_packet('01:23:45:67:89:ab/invalid')
 
+
 class TestSendMagicPacket(unittest.TestCase):
     """
     Test :ref:`send_magic_packet`.
