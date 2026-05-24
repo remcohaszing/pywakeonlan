@@ -102,11 +102,11 @@ As a standalone script
                            The ip address of the network adapter to route the magic packet through. (default: None)
 
 
-************
-Dependencies
-************
+*************
+Compatibility
+*************
 
-- Python 3.x
+This project works with Python 3.7 or greater.
 
 
 *******
