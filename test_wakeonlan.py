@@ -590,8 +590,7 @@ class TestSendMagicPacket(unittest.TestCase):
     @mock.patch('socket.socket')
     def test_send_magic_packet_secureon(self, sock: mock.Mock) -> None:
         """
-        Test whether the magic packets are broadcasted using default
-        values with a SecureOn password.
+        Test whether the magic packets are broadcasted using default values with a SecureOn password.
 
         """
         send_magic_packet('01:23:45:67:89:ab/ff:ff:ff:ff:ff:ff')
