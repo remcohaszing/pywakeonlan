@@ -18,7 +18,7 @@ wakeonlan
    :target: https://pywakeonlan.readthedocs.io/en/latest
    :alt: Documentation Status
 
-.. image:: https://codecov.io/gh/remcohaszing/pywakeonlan/branch/master/graph/badge.svg
+.. image:: https://codecov.io/gh/remcohaszing/pywakeonlan/branch/main/graph/badge.svg
    :target: https://codecov.io/gh/remcohaszing/pywakeonlan
    :alt: Code coverage
 
@@ -31,9 +31,9 @@ For more information on the wake on lan protocol please take a look at
 Installation
 ************
 
-::
+.. code-block:: sh
 
-    pip install wakeonlan
+   pip install wakeonlan
 
 
 *****
@@ -86,29 +86,30 @@ A network adapter may be specified. The magic packet will be routed through this
 As a standalone script
 ======================
 
-::
+.. code-block:: console
 
-    usage: wakeonlan [-h] [-6] [-i IP] [-p PORT] [-n INTERFACE] mac address [mac address ...]
+   $ wakeonlan --help
+   usage: wakeonlan [-h] [-6] [-i IP] [-p PORT] [-n INTERFACE] mac address [mac address ...]
+   
+   Wake one or more computers using the wake on lan protocol.
+   
+   positional arguments:
+     mac address           The mac addresses or "mac address/secureon password" tuples of the computers you are trying to wake.
+   
+   options:
+     -h, --help            show this help message and exit
+     -6, --ipv6            To indicate if ipv6 should be used by default instead of ipv4. (default: False)
+     -i IP, --ip IP        The ip address of the host to send the magic packet to. (default: 255.255.255.255)
+     -p PORT, --port PORT  The port of the host to send the magic packet to. (default: 9)
+     -n INTERFACE, --interface INTERFACE
+                           The ip address of the network adapter to route the magic packet through. (default: None)
 
-    Wake one or more computers using the wake on lan protocol.
 
-    positional arguments:
-      mac address           The mac addresses or "mac address/secureon password" tuples of the computers you are trying to wake.
+*************
+Compatibility
+*************
 
-    options:
-      -h, --help            show this help message and exit
-      -6, --ipv6            To indicate if ipv6 should be used by default instead of ipv4. (default: False)
-      -i IP, --ip IP        The ip address of the host to send the magic packet to. (default: 255.255.255.255)
-      -p PORT, --port PORT  The port of the host to send the magic packet to. (default: 9)
-      -n INTERFACE, --interface INTERFACE
-                            The ip address of the network adapter to route the magic packet through. (default: None)
-
-
-************
-Dependencies
-************
-
-- Python 3.x
+This project works with Python 3.7 or greater.
 
 
 *******

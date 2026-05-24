@@ -2,14 +2,14 @@
 Configuration for the documentation generation.
 
 """
-import pkg_resources
+
+import sys
+from importlib import metadata
 
 
 project = 'wakeonlan'
-_dist = pkg_resources.get_distribution(project)
-
-version = _dist.version
-release = _dist.version
+version = metadata.version(project)
+release = version
 copyright = '2012, Remco Haszing'
 
 
@@ -21,7 +21,10 @@ extensions = [
 ]
 
 intersphinx_mapping = {
-    'python': ('https://docs.python.org/3.11', None),
+    'python': (
+        f'https://docs.python.org/{sys.version_info.major}.{sys.version_info.minor}',
+        None,
+    ),
 }
 
 nitpick_ignore = [('py:class', 'socket.AddressFamily')]
