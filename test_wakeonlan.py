@@ -2,6 +2,7 @@
 Tests for wakeonlan.
 
 """
+
 import socket
 import unittest
 from unittest import mock

@@ -3,6 +3,7 @@
 Small module for use with the wake on lan protocol.
 
 """
+
 import argparse
 import ipaddress
 import socket
