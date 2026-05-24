@@ -5,7 +5,6 @@ Small module for use with the wake on lan protocol.
 """
 
 import argparse
-import ipaddress
 import socket
 import typing
 
@@ -83,9 +82,12 @@ def send_magic_packet(
     packets = [create_magic_packet(mac) for mac in macs]
 
     if address_family is None:
-        address_family = (
-            socket.AF_INET6 if _is_ipv6_address(ip_address) else socket.AF_INET
-        )
+        for family, *_ in socket.getaddrinfo(ip_address, port):
+            if family == socket.AF_INET6 or family == socket.AF_INET:
+                address_family = family
+                break
+        else:
+            address_family = socket.AF_INET
 
     with socket.socket(address_family, socket.SOCK_DGRAM) as sock:
         if interface is not None:
@@ -94,13 +96,6 @@ def send_magic_packet(
         sock.connect((ip_address, port))
         for packet in packets:
             sock.send(packet)
-
-
-def _is_ipv6_address(ip_address: str) -> bool:
-    try:
-        return isinstance(ipaddress.ip_address(ip_address), ipaddress.IPv6Address)
-    except ValueError:
-        return False
 
 
 def main(argv: typing.Optional[typing.List[str]] = None) -> None:
