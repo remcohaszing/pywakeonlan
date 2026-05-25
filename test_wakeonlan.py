@@ -271,7 +271,7 @@ class TestSendMagicPacket(unittest.TestCase):
         self.assertEqual(
             sock.mock_calls,
             [
-                mock.call(socket.AF_INET, socket.SOCK_DGRAM),
+                mock.call(socket.AF_INET6, socket.SOCK_DGRAM),
                 mock.call().__enter__(),
                 mock.call()
                 .__enter__()
@@ -401,7 +401,7 @@ class TestSendMagicPacket(unittest.TestCase):
         self.assertEqual(
             sock.mock_calls,
             [
-                mock.call(socket.AF_INET, socket.SOCK_DGRAM),
+                mock.call(socket.AF_INET6, socket.SOCK_DGRAM),
                 mock.call().__enter__(),
                 mock.call().__enter__().bind(('192.168.0.2', 0)),
                 mock.call()
