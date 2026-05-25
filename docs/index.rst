@@ -1,8 +1,1 @@
-###########
-Pywakeonlan
-###########
-
-.. toctree::
-    readme
-    apidocs
-    license
+.. include:: ../README.rst
