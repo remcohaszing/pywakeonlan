@@ -1,5 +1,5 @@
 ###############
-Python api docs
+Python API Docs
 ###############
 
 .. automodule:: wakeonlan

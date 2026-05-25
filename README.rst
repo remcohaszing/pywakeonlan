@@ -46,7 +46,7 @@ ip address, but it does have a mac address. The package needs to be sent as a
 broadcast package.
 
 
-As a python module
+As a Python Module
 ==================
 
 Import the module
@@ -83,7 +83,7 @@ A network adapter may be specified. The magic packet will be routed through this
 ...                   interface='192.168.0.2')
 
 
-As a standalone script
+As a Standalone Script
 ======================
 
 .. code-block:: console
