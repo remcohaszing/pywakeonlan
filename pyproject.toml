@@ -1,12 +1,26 @@
-[tool.poetry]
+[project]
 name = "wakeonlan"
 version = "3.3.0"
 description = "A small python module for wake on lan."
-authors = ["Remco Haszing <remcohaszing@gmail.com>"]
 license = "MIT"
 readme = "README.rst"
-documentation = "http://pywakeonlan.readthedocs.io"
-repository = "https://github.com/remcohaszing/pywakeonlan"
+requires-python = ">=3.10"
+authors = [
+    { name = "Remco Haszing", email = "remcohaszing@gmail.com" }
+]
+dynamic = ["classifiers"]
+
+[project.urls]
+Source = "https://github.com/remcohaszing/pywakeonlan"
+Documentation = "http://pywakeonlan.readthedocs.io"
+Changelog = "https://github.com/remcohaszing/pywakeonlan/releases"
+Issues = "https://github.com/remcohaszing/pywakeonlan/issues"
+Funding = "https://github.com/sponsors/remcohaszing"
+
+[project.scripts]
+wakeonlan = "wakeonlan:main"
+
+[tool.poetry]
 classifiers = [
     "Development Status :: 5 - Production/Stable",
     "Intended Audience :: Developers",
@@ -14,17 +28,6 @@ classifiers = [
     "Topic :: System :: Networking",
     "Typing :: Typed"
 ]
-
-[tool.poetry.urls]
-Changelog = "https://github.com/remcohaszing/pywakeonlan/releases"
-Issues = "https://github.com/remcohaszing/pywakeonlan/issues"
-Sponsor = "https://github.com/sponsors/remcohaszing"
-
-[tool.poetry.scripts]
-wakeonlan = "wakeonlan:main"
-
-[tool.poetry.dependencies]
-python = "^3.10"
 
 [tool.poetry.group.dev.dependencies]
 coverage = { version = "*" }
