@@ -34,5 +34,4 @@ nitpicky = True
 default_role = 'any'
 todo_include_todos = True
 
-master_doc = 'index'
 html_theme = 'sphinx_rtd_theme'
