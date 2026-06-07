@@ -81,17 +81,25 @@ def send_magic_packet(
     """
     packets = [create_magic_packet(mac) for mac in macs]
 
-    family, type, proto, canonname, addr = socket.getaddrinfo(
+    error: typing.Optional[socket.gaierror] = None
+    for family, type, proto, canonname, addr in socket.getaddrinfo(
         ip_address, port, type=socket.SOCK_DGRAM, proto=socket.IPPROTO_UDP
-    )[0]
-
-    with socket.socket(family, type, proto) as sock:
-        if interface is not None:
-            sock.bind((interface, 0))
-        sock.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
-        sock.connect(addr)
-        for packet in packets:
-            sock.send(packet)
+    ):
+        try:
+            with socket.socket(family, type, proto) as sock:
+                if interface is not None:
+                    sock.bind((interface, 0))
+                sock.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
+                sock.connect(addr)
+                for packet in packets:
+                    sock.send(packet)
+                break
+        except socket.gaierror as e:
+            if not error:
+                error = e
+            continue
+    if error:
+        raise error
 
 
 def main(argv: typing.Optional[typing.List[str]] = None) -> None:
