@@ -259,375 +259,225 @@ class TestSendMagicPacket(unittest.TestCase):
 
     """
 
-    @mock.patch('socket.socket')
-    def test_send_magic_packet(self, sock: mock.Mock) -> None:
+    def test_specific_network(self) -> None:
         """
         Test whether the magic packets are broadcasted to the specified network.
 
         """
-        send_magic_packet(
-            '133713371337', '00-00-00-00-00-00', ip_address='example.com', port=7
-        )
-        self.assertEqual(
-            sock.mock_calls,
-            [
-                mock.call(socket.AF_INET, socket.SOCK_DGRAM),
-                mock.call().__enter__(),
-                mock.call()
-                .__enter__()
-                .setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1),
-                mock.call().__enter__().connect(('example.com', 7)),
-                mock.call()
-                .__enter__()
-                .send(
-                    b'\xff\xff\xff\xff\xff\xff'
-                    b'\x137\x137\x137'
-                    b'\x137\x137\x137'
-                    b'\x137\x137\x137'
-                    b'\x137\x137\x137'
-                    b'\x137\x137\x137'
-                    b'\x137\x137\x137'
-                    b'\x137\x137\x137'
-                    b'\x137\x137\x137'
-                    b'\x137\x137\x137'
-                    b'\x137\x137\x137'
-                    b'\x137\x137\x137'
-                    b'\x137\x137\x137'
-                    b'\x137\x137\x137'
-                    b'\x137\x137\x137'
-                    b'\x137\x137\x137'
-                    b'\x137\x137\x137'
-                ),
-                mock.call()
-                .__enter__()
-                .send(
-                    b'\xff\xff\xff\xff\xff\xff'
-                    b'\x00\x00\x00\x00\x00\x00'
-                    b'\x00\x00\x00\x00\x00\x00'
-                    b'\x00\x00\x00\x00\x00\x00'
-                    b'\x00\x00\x00\x00\x00\x00'
-                    b'\x00\x00\x00\x00\x00\x00'
-                    b'\x00\x00\x00\x00\x00\x00'
-                    b'\x00\x00\x00\x00\x00\x00'
-                    b'\x00\x00\x00\x00\x00\x00'
-                    b'\x00\x00\x00\x00\x00\x00'
-                    b'\x00\x00\x00\x00\x00\x00'
-                    b'\x00\x00\x00\x00\x00\x00'
-                    b'\x00\x00\x00\x00\x00\x00'
-                    b'\x00\x00\x00\x00\x00\x00'
-                    b'\x00\x00\x00\x00\x00\x00'
-                    b'\x00\x00\x00\x00\x00\x00'
-                    b'\x00\x00\x00\x00\x00\x00'
-                ),
-                mock.call().__exit__(None, None, None),
-            ],
-        )
+        with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as sock:
+            sock.bind(('127.0.0.255', 1234))
+            send_magic_packet(
+                '133713371337', '00-00-00-00-00-00', ip_address='127.0.0.255', port=1234
+            )
+            data, addr = sock.recvfrom(1024)
+            self.assertEqual(addr[0], '127.0.0.1')
+            self.assertEqual(
+                data,
+                b'\xff\xff\xff\xff\xff\xff'
+                b'\x13\x37\x13\x37\x13\x37'
+                b'\x13\x37\x13\x37\x13\x37'
+                b'\x13\x37\x13\x37\x13\x37'
+                b'\x13\x37\x13\x37\x13\x37'
+                b'\x13\x37\x13\x37\x13\x37'
+                b'\x13\x37\x13\x37\x13\x37'
+                b'\x13\x37\x13\x37\x13\x37'
+                b'\x13\x37\x13\x37\x13\x37'
+                b'\x13\x37\x13\x37\x13\x37'
+                b'\x13\x37\x13\x37\x13\x37'
+                b'\x13\x37\x13\x37\x13\x37'
+                b'\x13\x37\x13\x37\x13\x37'
+                b'\x13\x37\x13\x37\x13\x37'
+                b'\x13\x37\x13\x37\x13\x37'
+                b'\x13\x37\x13\x37\x13\x37'
+                b'\x13\x37\x13\x37\x13\x37',
+            )
 
-    @mock.patch('socket.socket')
-    def test_send_magic_packet_default(self, sock: mock.Mock) -> None:
+    def test_default_network(self) -> None:
         """
         Test whether the magic packets are broadcasted using default values.
 
         """
-        send_magic_packet('133713371337', '00-00-00-00-00-00')
-        self.assertEqual(
-            sock.mock_calls,
-            [
-                mock.call(socket.AF_INET, socket.SOCK_DGRAM),
-                mock.call().__enter__(),
-                mock.call()
-                .__enter__()
-                .setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1),
-                mock.call().__enter__().connect(('255.255.255.255', 9)),
-                mock.call()
-                .__enter__()
-                .send(
-                    b'\xff\xff\xff\xff\xff\xff'
-                    b'\x137\x137\x137'
-                    b'\x137\x137\x137'
-                    b'\x137\x137\x137'
-                    b'\x137\x137\x137'
-                    b'\x137\x137\x137'
-                    b'\x137\x137\x137'
-                    b'\x137\x137\x137'
-                    b'\x137\x137\x137'
-                    b'\x137\x137\x137'
-                    b'\x137\x137\x137'
-                    b'\x137\x137\x137'
-                    b'\x137\x137\x137'
-                    b'\x137\x137\x137'
-                    b'\x137\x137\x137'
-                    b'\x137\x137\x137'
-                    b'\x137\x137\x137'
-                ),
-                mock.call()
-                .__enter__()
-                .send(
-                    b'\xff\xff\xff\xff\xff\xff'
-                    b'\x00\x00\x00\x00\x00\x00'
-                    b'\x00\x00\x00\x00\x00\x00'
-                    b'\x00\x00\x00\x00\x00\x00'
-                    b'\x00\x00\x00\x00\x00\x00'
-                    b'\x00\x00\x00\x00\x00\x00'
-                    b'\x00\x00\x00\x00\x00\x00'
-                    b'\x00\x00\x00\x00\x00\x00'
-                    b'\x00\x00\x00\x00\x00\x00'
-                    b'\x00\x00\x00\x00\x00\x00'
-                    b'\x00\x00\x00\x00\x00\x00'
-                    b'\x00\x00\x00\x00\x00\x00'
-                    b'\x00\x00\x00\x00\x00\x00'
-                    b'\x00\x00\x00\x00\x00\x00'
-                    b'\x00\x00\x00\x00\x00\x00'
-                    b'\x00\x00\x00\x00\x00\x00'
-                    b'\x00\x00\x00\x00\x00\x00'
-                ),
-                mock.call().__exit__(None, None, None),
-            ],
-        )
+        with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as sock:
+            sock.bind(('', 1234))
+            send_magic_packet('133713371337', port=1234)
+            data, addr = sock.recvfrom(1024)
+            self.assertEqual(addr[0], socket.gethostbyname(socket.gethostname()))
+            self.assertEqual(
+                data,
+                b'\xff\xff\xff\xff\xff\xff'
+                b'\x13\x37\x13\x37\x13\x37'
+                b'\x13\x37\x13\x37\x13\x37'
+                b'\x13\x37\x13\x37\x13\x37'
+                b'\x13\x37\x13\x37\x13\x37'
+                b'\x13\x37\x13\x37\x13\x37'
+                b'\x13\x37\x13\x37\x13\x37'
+                b'\x13\x37\x13\x37\x13\x37'
+                b'\x13\x37\x13\x37\x13\x37'
+                b'\x13\x37\x13\x37\x13\x37'
+                b'\x13\x37\x13\x37\x13\x37'
+                b'\x13\x37\x13\x37\x13\x37'
+                b'\x13\x37\x13\x37\x13\x37'
+                b'\x13\x37\x13\x37\x13\x37'
+                b'\x13\x37\x13\x37\x13\x37'
+                b'\x13\x37\x13\x37\x13\x37'
+                b'\x13\x37\x13\x37\x13\x37',
+            )
 
-    @mock.patch('socket.socket')
-    def test_send_magic_packet_interface(self, sock: mock.Mock) -> None:
+    def test_multiple_packets(self) -> None:
+        """
+        Test whether multiple packets can be sent.
+
+        """
+        with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as sock:
+            sock.bind(('', 1234))
+            send_magic_packet('133713371337', '000000000000', port=1234)
+            data = sock.recv(1024)
+            self.assertEqual(
+                data,
+                b'\xff\xff\xff\xff\xff\xff'
+                b'\x13\x37\x13\x37\x13\x37'
+                b'\x13\x37\x13\x37\x13\x37'
+                b'\x13\x37\x13\x37\x13\x37'
+                b'\x13\x37\x13\x37\x13\x37'
+                b'\x13\x37\x13\x37\x13\x37'
+                b'\x13\x37\x13\x37\x13\x37'
+                b'\x13\x37\x13\x37\x13\x37'
+                b'\x13\x37\x13\x37\x13\x37'
+                b'\x13\x37\x13\x37\x13\x37'
+                b'\x13\x37\x13\x37\x13\x37'
+                b'\x13\x37\x13\x37\x13\x37'
+                b'\x13\x37\x13\x37\x13\x37'
+                b'\x13\x37\x13\x37\x13\x37'
+                b'\x13\x37\x13\x37\x13\x37'
+                b'\x13\x37\x13\x37\x13\x37'
+                b'\x13\x37\x13\x37\x13\x37',
+            )
+            data = sock.recv(1024)
+            self.assertEqual(
+                data,
+                b'\xff\xff\xff\xff\xff\xff'
+                b'\x00\x00\x00\x00\x00\x00'
+                b'\x00\x00\x00\x00\x00\x00'
+                b'\x00\x00\x00\x00\x00\x00'
+                b'\x00\x00\x00\x00\x00\x00'
+                b'\x00\x00\x00\x00\x00\x00'
+                b'\x00\x00\x00\x00\x00\x00'
+                b'\x00\x00\x00\x00\x00\x00'
+                b'\x00\x00\x00\x00\x00\x00'
+                b'\x00\x00\x00\x00\x00\x00'
+                b'\x00\x00\x00\x00\x00\x00'
+                b'\x00\x00\x00\x00\x00\x00'
+                b'\x00\x00\x00\x00\x00\x00'
+                b'\x00\x00\x00\x00\x00\x00'
+                b'\x00\x00\x00\x00\x00\x00'
+                b'\x00\x00\x00\x00\x00\x00'
+                b'\x00\x00\x00\x00\x00\x00',
+            )
+
+    def test_send_magic_packet_interface(self) -> None:
         """
         Test whether the magic packets are broadcasted to the specified network via specified interface.
 
         """
-        send_magic_packet(
-            '133713371337',
-            '00-00-00-00-00-00',
-            ip_address='example.com',
-            port=7,
-            interface='192.168.0.2',
-        )
-        self.assertEqual(
-            sock.mock_calls,
-            [
-                mock.call(socket.AF_INET, socket.SOCK_DGRAM),
-                mock.call().__enter__(),
-                mock.call().__enter__().bind(('192.168.0.2', 0)),
-                mock.call()
-                .__enter__()
-                .setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1),
-                mock.call().__enter__().connect(('example.com', 7)),
-                mock.call()
-                .__enter__()
-                .send(
-                    b'\xff\xff\xff\xff\xff\xff'
-                    b'\x137\x137\x137'
-                    b'\x137\x137\x137'
-                    b'\x137\x137\x137'
-                    b'\x137\x137\x137'
-                    b'\x137\x137\x137'
-                    b'\x137\x137\x137'
-                    b'\x137\x137\x137'
-                    b'\x137\x137\x137'
-                    b'\x137\x137\x137'
-                    b'\x137\x137\x137'
-                    b'\x137\x137\x137'
-                    b'\x137\x137\x137'
-                    b'\x137\x137\x137'
-                    b'\x137\x137\x137'
-                    b'\x137\x137\x137'
-                    b'\x137\x137\x137'
-                ),
-                mock.call()
-                .__enter__()
-                .send(
-                    b'\xff\xff\xff\xff\xff\xff'
-                    b'\x00\x00\x00\x00\x00\x00'
-                    b'\x00\x00\x00\x00\x00\x00'
-                    b'\x00\x00\x00\x00\x00\x00'
-                    b'\x00\x00\x00\x00\x00\x00'
-                    b'\x00\x00\x00\x00\x00\x00'
-                    b'\x00\x00\x00\x00\x00\x00'
-                    b'\x00\x00\x00\x00\x00\x00'
-                    b'\x00\x00\x00\x00\x00\x00'
-                    b'\x00\x00\x00\x00\x00\x00'
-                    b'\x00\x00\x00\x00\x00\x00'
-                    b'\x00\x00\x00\x00\x00\x00'
-                    b'\x00\x00\x00\x00\x00\x00'
-                    b'\x00\x00\x00\x00\x00\x00'
-                    b'\x00\x00\x00\x00\x00\x00'
-                    b'\x00\x00\x00\x00\x00\x00'
-                    b'\x00\x00\x00\x00\x00\x00'
-                ),
-                mock.call().__exit__(None, None, None),
-            ],
-        )
+        with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as sock:
+            sock.bind(('<broadcast>', 1234))
+            send_magic_packet(
+                '133713371337',
+                interface='127.0.0.1',
+                port=1234,
+            )
+            data, addr = sock.recvfrom(1024)
+            self.assertEqual(addr[0], '127.0.0.1')
+            self.assertEqual(
+                data,
+                b'\xff\xff\xff\xff\xff\xff'
+                b'\x13\x37\x13\x37\x13\x37'
+                b'\x13\x37\x13\x37\x13\x37'
+                b'\x13\x37\x13\x37\x13\x37'
+                b'\x13\x37\x13\x37\x13\x37'
+                b'\x13\x37\x13\x37\x13\x37'
+                b'\x13\x37\x13\x37\x13\x37'
+                b'\x13\x37\x13\x37\x13\x37'
+                b'\x13\x37\x13\x37\x13\x37'
+                b'\x13\x37\x13\x37\x13\x37'
+                b'\x13\x37\x13\x37\x13\x37'
+                b'\x13\x37\x13\x37\x13\x37'
+                b'\x13\x37\x13\x37\x13\x37'
+                b'\x13\x37\x13\x37\x13\x37'
+                b'\x13\x37\x13\x37\x13\x37'
+                b'\x13\x37\x13\x37\x13\x37'
+                b'\x13\x37\x13\x37\x13\x37',
+            )
 
-    @mock.patch('socket.socket')
-    def test_send_correct_af_chosen_with_ipv6_address(self, sock: mock.Mock) -> None:
-        """
-        Test whether AF_INET6 automatically chosen when the `address_family` argument is not given.
-        """
-        send_magic_packet(
-            '133713371337',
-            '00-00-00-00-00-00',
-            ip_address='fc00::',
-            port=7,
-        )
-        self.assertEqual(
-            sock.mock_calls,
-            [
-                mock.call(socket.AF_INET6, socket.SOCK_DGRAM),
-                mock.call().__enter__(),
-                mock.call()
-                .__enter__()
-                .setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1),
-                mock.call().__enter__().connect(('fc00::', 7)),
-                mock.call()
-                .__enter__()
-                .send(
-                    b'\xff\xff\xff\xff\xff\xff'
-                    b'\x137\x137\x137'
-                    b'\x137\x137\x137'
-                    b'\x137\x137\x137'
-                    b'\x137\x137\x137'
-                    b'\x137\x137\x137'
-                    b'\x137\x137\x137'
-                    b'\x137\x137\x137'
-                    b'\x137\x137\x137'
-                    b'\x137\x137\x137'
-                    b'\x137\x137\x137'
-                    b'\x137\x137\x137'
-                    b'\x137\x137\x137'
-                    b'\x137\x137\x137'
-                    b'\x137\x137\x137'
-                    b'\x137\x137\x137'
-                    b'\x137\x137\x137'
-                ),
-                mock.call()
-                .__enter__()
-                .send(
-                    b'\xff\xff\xff\xff\xff\xff'
-                    b'\x00\x00\x00\x00\x00\x00'
-                    b'\x00\x00\x00\x00\x00\x00'
-                    b'\x00\x00\x00\x00\x00\x00'
-                    b'\x00\x00\x00\x00\x00\x00'
-                    b'\x00\x00\x00\x00\x00\x00'
-                    b'\x00\x00\x00\x00\x00\x00'
-                    b'\x00\x00\x00\x00\x00\x00'
-                    b'\x00\x00\x00\x00\x00\x00'
-                    b'\x00\x00\x00\x00\x00\x00'
-                    b'\x00\x00\x00\x00\x00\x00'
-                    b'\x00\x00\x00\x00\x00\x00'
-                    b'\x00\x00\x00\x00\x00\x00'
-                    b'\x00\x00\x00\x00\x00\x00'
-                    b'\x00\x00\x00\x00\x00\x00'
-                    b'\x00\x00\x00\x00\x00\x00'
-                    b'\x00\x00\x00\x00\x00\x00'
-                ),
-                mock.call().__exit__(None, None, None),
-            ],
-        )
-
-    @mock.patch('socket.socket')
-    def test_send_with_explicit_ipv6_address(self, sock: mock.Mock) -> None:
+    def test_send_with_explicit_ipv6_address(self) -> None:
         """
         Test whether the given address family is used instead automatically it automatically.
         """
-        send_magic_packet(
-            '133713371337',
-            '00-00-00-00-00-00',
-            ip_address='example.com',
-            port=7,
-            address_family=socket.AF_INET6,
-        )
-        self.assertEqual(
-            sock.mock_calls,
-            [
-                mock.call(socket.AF_INET6, socket.SOCK_DGRAM),
-                mock.call().__enter__(),
-                mock.call()
-                .__enter__()
-                .setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1),
-                mock.call().__enter__().connect(('example.com', 7)),
-                mock.call()
-                .__enter__()
-                .send(
-                    b'\xff\xff\xff\xff\xff\xff'
-                    b'\x137\x137\x137'
-                    b'\x137\x137\x137'
-                    b'\x137\x137\x137'
-                    b'\x137\x137\x137'
-                    b'\x137\x137\x137'
-                    b'\x137\x137\x137'
-                    b'\x137\x137\x137'
-                    b'\x137\x137\x137'
-                    b'\x137\x137\x137'
-                    b'\x137\x137\x137'
-                    b'\x137\x137\x137'
-                    b'\x137\x137\x137'
-                    b'\x137\x137\x137'
-                    b'\x137\x137\x137'
-                    b'\x137\x137\x137'
-                    b'\x137\x137\x137'
-                ),
-                mock.call()
-                .__enter__()
-                .send(
-                    b'\xff\xff\xff\xff\xff\xff'
-                    b'\x00\x00\x00\x00\x00\x00'
-                    b'\x00\x00\x00\x00\x00\x00'
-                    b'\x00\x00\x00\x00\x00\x00'
-                    b'\x00\x00\x00\x00\x00\x00'
-                    b'\x00\x00\x00\x00\x00\x00'
-                    b'\x00\x00\x00\x00\x00\x00'
-                    b'\x00\x00\x00\x00\x00\x00'
-                    b'\x00\x00\x00\x00\x00\x00'
-                    b'\x00\x00\x00\x00\x00\x00'
-                    b'\x00\x00\x00\x00\x00\x00'
-                    b'\x00\x00\x00\x00\x00\x00'
-                    b'\x00\x00\x00\x00\x00\x00'
-                    b'\x00\x00\x00\x00\x00\x00'
-                    b'\x00\x00\x00\x00\x00\x00'
-                    b'\x00\x00\x00\x00\x00\x00'
-                    b'\x00\x00\x00\x00\x00\x00'
-                ),
-                mock.call().__exit__(None, None, None),
-            ],
-        )
+        with socket.socket(socket.AF_INET6, socket.SOCK_DGRAM) as sock:
+            sock.bind(('', 1234))
+            send_magic_packet(
+                '133713371337',
+                ip_address='localhost',
+                port=1234,
+                address_family=socket.AF_INET6,
+            )
+            data, addr = sock.recvfrom(1024)
+            self.assertEqual(addr[0], '::1')
+            self.assertEqual(
+                data,
+                b'\xff\xff\xff\xff\xff\xff'
+                b'\x13\x37\x13\x37\x13\x37'
+                b'\x13\x37\x13\x37\x13\x37'
+                b'\x13\x37\x13\x37\x13\x37'
+                b'\x13\x37\x13\x37\x13\x37'
+                b'\x13\x37\x13\x37\x13\x37'
+                b'\x13\x37\x13\x37\x13\x37'
+                b'\x13\x37\x13\x37\x13\x37'
+                b'\x13\x37\x13\x37\x13\x37'
+                b'\x13\x37\x13\x37\x13\x37'
+                b'\x13\x37\x13\x37\x13\x37'
+                b'\x13\x37\x13\x37\x13\x37'
+                b'\x13\x37\x13\x37\x13\x37'
+                b'\x13\x37\x13\x37\x13\x37'
+                b'\x13\x37\x13\x37\x13\x37'
+                b'\x13\x37\x13\x37\x13\x37'
+                b'\x13\x37\x13\x37\x13\x37',
+            )
 
-    @mock.patch('socket.socket')
-    def test_send_magic_packet_secureon(self, sock: mock.Mock) -> None:
+    def test_send_magic_packet_secureon(self) -> None:
         """
         Test whether the magic packets are broadcasted using default values with a SecureOn password.
 
         """
-        send_magic_packet('01:23:45:67:89:ab/ff:ff:ff:ff:ff:ff')
-        self.assertEqual(
-            sock.mock_calls,
-            [
-                mock.call(socket.AF_INET, socket.SOCK_DGRAM),
-                mock.call().__enter__(),
-                mock.call()
-                .__enter__()
-                .setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1),
-                mock.call().__enter__().connect(('255.255.255.255', 9)),
-                mock.call()
-                .__enter__()
-                .send(
-                    b'\xff\xff\xff\xff\xff\xff'
-                    b'\x01#Eg\x89\xab'
-                    b'\x01#Eg\x89\xab'
-                    b'\x01#Eg\x89\xab'
-                    b'\x01#Eg\x89\xab'
-                    b'\x01#Eg\x89\xab'
-                    b'\x01#Eg\x89\xab'
-                    b'\x01#Eg\x89\xab'
-                    b'\x01#Eg\x89\xab'
-                    b'\x01#Eg\x89\xab'
-                    b'\x01#Eg\x89\xab'
-                    b'\x01#Eg\x89\xab'
-                    b'\x01#Eg\x89\xab'
-                    b'\x01#Eg\x89\xab'
-                    b'\x01#Eg\x89\xab'
-                    b'\x01#Eg\x89\xab'
-                    b'\x01#Eg\x89\xab'
-                    b'\xff\xff\xff\xff\xff\xff'
-                ),
-                mock.call().__exit__(None, None, None),
-            ],
-        )
+        with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as sock:
+            sock.bind(('', 1234))
+            send_magic_packet(
+                '01:23:45:67:89:ab/00:00:00:00:00:00',
+                port=1234,
+            )
+            data, addr = sock.recvfrom(1024)
+            self.assertEqual(addr[0], socket.gethostbyname(socket.gethostname()))
+            self.assertEqual(
+                data,
+                b'\xff\xff\xff\xff\xff\xff'
+                b'\x01\x23\x45\x67\x89\xab'
+                b'\x01\x23\x45\x67\x89\xab'
+                b'\x01\x23\x45\x67\x89\xab'
+                b'\x01\x23\x45\x67\x89\xab'
+                b'\x01\x23\x45\x67\x89\xab'
+                b'\x01\x23\x45\x67\x89\xab'
+                b'\x01\x23\x45\x67\x89\xab'
+                b'\x01\x23\x45\x67\x89\xab'
+                b'\x01\x23\x45\x67\x89\xab'
+                b'\x01\x23\x45\x67\x89\xab'
+                b'\x01\x23\x45\x67\x89\xab'
+                b'\x01\x23\x45\x67\x89\xab'
+                b'\x01\x23\x45\x67\x89\xab'
+                b'\x01\x23\x45\x67\x89\xab'
+                b'\x01\x23\x45\x67\x89\xab'
+                b'\x01\x23\x45\x67\x89\xab'
+                b'\x00\x00\x00\x00\x00\x00',
+            )
 
 
 class TestMain(unittest.TestCase):
