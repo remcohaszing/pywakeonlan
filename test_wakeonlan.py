@@ -412,6 +412,7 @@ class TestSendMagicPacket(unittest.TestCase):
     def test_send_correct_af_chosen_with_ipv6_address(self) -> None:
         """
         Test whether AF_INET6 automatically chosen when the `address_family` argument is not given.
+
         """
         with socket.socket(socket.AF_INET6, socket.SOCK_DGRAM) as sock:
             sock.bind(('', 1234))
@@ -447,6 +448,7 @@ class TestSendMagicPacket(unittest.TestCase):
     def test_send_with_explicit_ipv6_address(self) -> None:
         """
         Test whether the given address family is used instead automatically it automatically.
+
         """
         with socket.socket(socket.AF_INET6, socket.SOCK_DGRAM) as sock:
             sock.bind(('', 1234))
