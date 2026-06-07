@@ -409,6 +409,41 @@ class TestSendMagicPacket(unittest.TestCase):
                 b'\x13\x37\x13\x37\x13\x37',
             )
 
+    def test_send_correct_af_chosen_with_ipv6_address(self) -> None:
+        """
+        Test whether AF_INET6 automatically chosen when the `address_family` argument is not given.
+        """
+        with socket.socket(socket.AF_INET6, socket.SOCK_DGRAM) as sock:
+            sock.bind(('', 1234))
+            send_magic_packet(
+                '133713371337',
+                '00-00-00-00-00-00',
+                ip_address='::1',
+                port=1234,
+            )
+            data, addr = sock.recvfrom(1024)
+            self.assertEqual(addr[0], '::1')
+            self.assertEqual(
+                data,
+                b'\xff\xff\xff\xff\xff\xff'
+                b'\x13\x37\x13\x37\x13\x37'
+                b'\x13\x37\x13\x37\x13\x37'
+                b'\x13\x37\x13\x37\x13\x37'
+                b'\x13\x37\x13\x37\x13\x37'
+                b'\x13\x37\x13\x37\x13\x37'
+                b'\x13\x37\x13\x37\x13\x37'
+                b'\x13\x37\x13\x37\x13\x37'
+                b'\x13\x37\x13\x37\x13\x37'
+                b'\x13\x37\x13\x37\x13\x37'
+                b'\x13\x37\x13\x37\x13\x37'
+                b'\x13\x37\x13\x37\x13\x37'
+                b'\x13\x37\x13\x37\x13\x37'
+                b'\x13\x37\x13\x37\x13\x37'
+                b'\x13\x37\x13\x37\x13\x37'
+                b'\x13\x37\x13\x37\x13\x37'
+                b'\x13\x37\x13\x37\x13\x37',
+            )
+
     def test_send_with_explicit_ipv6_address(self) -> None:
         """
         Test whether the given address family is used instead automatically it automatically.
