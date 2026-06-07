@@ -81,19 +81,15 @@ def send_magic_packet(
     """
     packets = [create_magic_packet(mac) for mac in macs]
 
-    if address_family is None:
-        for family, *_ in socket.getaddrinfo(ip_address, port):
-            if family == socket.AF_INET6 or family == socket.AF_INET:
-                address_family = family
-                break
-        else:
-            address_family = socket.AF_INET
+    family, type, proto, canonname, addr = socket.getaddrinfo(
+        ip_address, port, type=socket.SOCK_DGRAM, proto=socket.IPPROTO_UDP
+    )[0]
 
-    with socket.socket(address_family, socket.SOCK_DGRAM) as sock:
+    with socket.socket(family, type, proto) as sock:
         if interface is not None:
             sock.bind((interface, 0))
         sock.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
-        sock.connect((ip_address, port))
+        sock.connect(addr)
         for packet in packets:
             sock.send(packet)
 
