@@ -81,10 +81,15 @@ def send_magic_packet(
     """
     packets = [create_magic_packet(mac) for mac in macs]
 
-    error: typing.Optional[socket.gaierror] = None
-    for family, type, proto, canonname, addr in socket.getaddrinfo(
+    address_infos = socket.getaddrinfo(
         ip_address, port, type=socket.SOCK_DGRAM, proto=socket.IPPROTO_UDP
-    ):
+    )
+
+    if not address_infos:
+        raise Exception(f'Could not resolve {ip_address}')
+
+    error: typing.Optional[socket.gaierror] = None
+    for family, type, proto, canonname, addr in address_infos:
         try:
             with socket.socket(family, type, proto) as sock:
                 if interface is not None:
