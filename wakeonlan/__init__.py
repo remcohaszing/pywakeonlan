@@ -52,12 +52,61 @@ def create_magic_packet(macaddress: str) -> bytes:
     return bytes.fromhex('F' * 12 + macaddress * 16 + secureon)
 
 
+def create_socket(
+    *,
+    ip_address: str = BROADCAST_IP,
+    port: int = DEFAULT_PORT,
+    interface: typing.Optional[str] = None,
+    address_family: socket.AddressFamily = socket.AF_UNSPEC,
+) -> socket.socket:
+    """
+    Create a socket that’s suitable for sending magic packets.
+
+    Args:
+        ip_address: The hostname to connect to.
+        port: The port to connect to.
+        interface: The IP address of the network adapter to use.
+        address_family: The address family to send the magic packet to.
+            Use this to force the use of IPv4 or IPv6. The default is
+            to auto detect.
+
+    Returns:
+        A socket you can use for sending magic packets.
+
+    """
+    # This is based on the example for a connection that supports both IPv4
+    # and IPv6 in https://docs.python.org/3/library/socket.html#example
+    # This also matches the getaddrinfo man page, which states applications
+    # should try using the addresses in order.
+    # https://man7.org/linux/man-pages/man3/getaddrinfo.3.html
+    address_infos = socket.getaddrinfo(
+        ip_address, port, address_family, socket.SOCK_DGRAM
+    )
+    sock: typing.Optional[socket.socket] = None
+    for index, (family, type, proto, canonname, addr) in enumerate(address_infos, 1):
+        try:
+            sock = socket.socket(family, type, proto)
+            sock.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
+            if interface:
+                sock.bind((interface, 0))
+            sock.connect(addr)
+            break
+        except OSError:
+            if sock:
+                sock.close()
+            sock = None
+            if index == len(address_infos):
+                raise
+    assert sock, 'sock should be defined at this point'
+    return sock
+
+
 def send_magic_packet(
     *macs: str,
     ip_address: str = BROADCAST_IP,
     port: int = DEFAULT_PORT,
     interface: typing.Optional[str] = None,
-    address_family: typing.Optional[socket.AddressFamily] = None,
+    address_family: socket.AddressFamily = socket.AF_UNSPEC,
 ) -> None:
     """
     Wake up computers having any of the given mac addresses.
@@ -81,30 +130,14 @@ def send_magic_packet(
     """
     packets = [create_magic_packet(mac) for mac in macs]
 
-    address_infos = socket.getaddrinfo(
-        ip_address, port, type=socket.SOCK_DGRAM, proto=socket.IPPROTO_UDP
-    )
-
-    if not address_infos:
-        raise Exception(f'Could not resolve {ip_address}')
-
-    error: typing.Optional[socket.gaierror] = None
-    for family, type, proto, canonname, addr in address_infos:
-        try:
-            with socket.socket(family, type, proto) as sock:
-                if interface is not None:
-                    sock.bind((interface, 0))
-                sock.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
-                sock.connect(addr)
-                for packet in packets:
-                    sock.send(packet)
-                break
-        except socket.gaierror as e:
-            if not error:
-                error = e
-            continue
-    if error:
-        raise error
+    with create_socket(
+        ip_address=ip_address,
+        port=port,
+        interface=interface,
+        address_family=address_family,
+    ) as sock:
+        for packet in packets:
+            sock.send(packet)
 
 
 def main(argv: typing.Optional[typing.List[str]] = None) -> None:
@@ -152,7 +185,7 @@ def main(argv: typing.Optional[typing.List[str]] = None) -> None:
         ip_address=args.ip,
         port=args.port,
         interface=args.interface,
-        address_family=socket.AF_INET6 if args.ipv6 else None,
+        address_family=socket.AF_INET6 if args.ipv6 else socket.AF_UNSPEC,
     )
 
 
