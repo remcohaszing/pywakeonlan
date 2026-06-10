@@ -447,7 +447,7 @@ class TestSendMagicPacket(unittest.TestCase):
 
     def test_send_with_explicit_ipv6_address(self) -> None:
         """
-        Test whether the given address family is used instead automatically it automatically.
+        Test whether the given address family is used instead of detecting it automatically.
 
         """
         with socket.socket(socket.AF_INET6, socket.SOCK_DGRAM) as sock:
