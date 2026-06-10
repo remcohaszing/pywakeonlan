@@ -550,14 +550,14 @@ class TestMain(unittest.TestCase):
                     ip_address='host.example',
                     port=1337,
                     interface=None,
-                    address_family=None,
+                    address_family=socket.AF_UNSPEC,
                 ),
                 mock.call(
                     '00:11:22:33:44:55',
                     ip_address='host.example',
                     port=1337,
                     interface='192.168.0.2',
-                    address_family=None,
+                    address_family=socket.AF_UNSPEC,
                 ),
                 mock.call(
                     '00:11:22:33:44:55',
