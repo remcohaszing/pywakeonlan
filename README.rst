@@ -109,7 +109,7 @@ As a Standalone Script
 Compatibility
 *************
 
-This project works with Python 3.7 or greater.
+This project works with Python 3.10 or greater.
 
 
 *******
