@@ -68,7 +68,7 @@ jobs:
       - run: poetry run coverage report
       - run: poetry run coverage lcov
       - uses: codecov/codecov-action@v6
-        if: ${{ matrix.python-version == '3.10' }}
+        if: ${{ matrix.python-version == '3.14' }}
 
   publish:
     runs-on: ubuntu-latest
