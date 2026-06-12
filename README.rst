@@ -51,36 +51,36 @@ As a Python Module
 
 Import the module
 
->>> from wakeonlan import send_magic_packet
+>>> import wakeonlan
 
 
 Wake up a single computer by its mac address
 
->>> send_magic_packet('ff.ff.ff.ff.ff.ff')
+>>> wakeonlan.wake('ff.ff.ff.ff.ff.ff')
 
 Wake up a single computer by its mac address with a SecureOn password
 
->>> send_magic_packet('ff.ff.ff.ff.ff.ff/01:23:45:67:89:ab')
+>>> wakeonlan.wake('ff.ff.ff.ff.ff.ff/01:23:45:67:89:ab')
 
 Wake up multiple computers by their mac addresses.
 
->>> send_magic_packet('ff.ff.ff.ff.ff.ff',
-...                   '00-00-00-00-00-00',
-...                   'FFFFFFFFFFFF')
+>>> wakeonlan.wake('ff.ff.ff.ff.ff.ff',
+...                '00-00-00-00-00-00',
+...                'FFFFFFFFFFFF')
 
 
 An external host may be specified. Do note that port forwarding on that host is
 required. The default ip address is 255.255.255.255 and the default port is 9.
 
->>> send_magic_packet('ff.ff.ff.ff.ff.ff',
-...                   ip_address='example.com',
-...                   port=1337)
+>>> wakeonlan.wake('ff.ff.ff.ff.ff.ff',
+...                ip_address='example.com',
+...                port=1337)
 
 
 A network adapter may be specified. The magic packet will be routed through this interface.
 
->>> send_magic_packet('ff.ff.ff.ff.ff.ff',
-...                   interface='192.168.0.2')
+>>> wakeonlan.wake('ff.ff.ff.ff.ff.ff',
+...                interface='192.168.0.2')
 
 
 As a Standalone Script

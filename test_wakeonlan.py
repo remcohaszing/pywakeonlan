@@ -7,7 +7,7 @@ import socket
 import unittest
 from unittest import mock
 
-from wakeonlan import create_magic_packet, create_socket, main, send_magic_packet
+from wakeonlan import create_magic_packet, create_socket, main, wake
 
 
 class TestCreateMagicPacket(unittest.TestCase):
@@ -333,7 +333,7 @@ class TestCreateSocket(unittest.TestCase):
 
 class TestSendMagicPacket(unittest.TestCase):
     """
-    Test :func:`send_magic_packet`.
+    Test :func:`wake`.
 
     """
 
@@ -344,7 +344,7 @@ class TestSendMagicPacket(unittest.TestCase):
         """
         with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as sock:
             sock.bind(('127.0.0.255', 1234))
-            send_magic_packet(
+            wake(
                 '133713371337', '00-00-00-00-00-00', ip_address='127.0.0.255', port=1234
             )
             data, addr = sock.recvfrom(1024)
@@ -377,7 +377,7 @@ class TestSendMagicPacket(unittest.TestCase):
         """
         with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as sock:
             sock.bind(('', 1234))
-            send_magic_packet('133713371337', port=1234)
+            wake('133713371337', port=1234)
             data, addr = sock.recvfrom(1024)
             self.assertEqual(addr[0], socket.gethostbyname(socket.gethostname()))
             self.assertEqual(
@@ -408,7 +408,7 @@ class TestSendMagicPacket(unittest.TestCase):
         """
         with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as sock:
             sock.bind(('', 1234))
-            send_magic_packet('133713371337', '000000000000', port=1234)
+            wake('133713371337', '000000000000', port=1234)
             data = sock.recv(1024)
             self.assertEqual(
                 data,
@@ -452,14 +452,14 @@ class TestSendMagicPacket(unittest.TestCase):
                 b'\x00\x00\x00\x00\x00\x00',
             )
 
-    def test_send_magic_packet_interface(self) -> None:
+    def test_wake_interface(self) -> None:
         """
         Test whether the magic packets are broadcasted to the specified network via specified interface.
 
         """
         with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as sock:
             sock.bind(('<broadcast>', 1234))
-            send_magic_packet(
+            wake(
                 '133713371337',
                 interface='127.0.0.1',
                 port=1234,
@@ -494,7 +494,7 @@ class TestSendMagicPacket(unittest.TestCase):
         """
         with socket.socket(socket.AF_INET6, socket.SOCK_DGRAM) as sock:
             sock.bind(('', 1234))
-            send_magic_packet(
+            wake(
                 '133713371337',
                 '00-00-00-00-00-00',
                 ip_address='::1',
@@ -530,7 +530,7 @@ class TestSendMagicPacket(unittest.TestCase):
         """
         with socket.socket(socket.AF_INET6, socket.SOCK_DGRAM) as sock:
             sock.bind(('', 1234))
-            send_magic_packet(
+            wake(
                 '133713371337',
                 ip_address='localhost',
                 port=1234,
@@ -559,14 +559,14 @@ class TestSendMagicPacket(unittest.TestCase):
                 b'\x13\x37\x13\x37\x13\x37',
             )
 
-    def test_send_magic_packet_secureon(self) -> None:
+    def test_wake_secureon(self) -> None:
         """
         Test whether the magic packets are broadcasted using default values with a SecureOn password.
 
         """
         with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as sock:
             sock.bind(('', 1234))
-            send_magic_packet(
+            wake(
                 '01:23:45:67:89:ab/00:00:00:00:00:00',
                 port=1234,
             )
@@ -601,10 +601,10 @@ class TestMain(unittest.TestCase):
 
     """
 
-    @mock.patch('wakeonlan.send_magic_packet')
-    def test_main(self, send_magic_packet: mock.Mock) -> None:
+    @mock.patch('wakeonlan.wake')
+    def test_main(self, wake: mock.Mock) -> None:
         """
-        Test if processed arguments are passed to send_magic_packet.
+        Test if processed arguments are passed to wake.
 
         """
         main(['00:11:22:33:44:55'])
@@ -624,7 +624,7 @@ class TestMain(unittest.TestCase):
         main(['00:11:22:33:44:55', '-i', 'host.example', '-p', '1337', '-6'])
         main(['00:11:22:33:44:55', '-i', 'host.example', '-p', '1337', '-6', '-4'])
         self.assertEqual(
-            send_magic_packet.mock_calls,
+            wake.mock_calls,
             [
                 mock.call(
                     '00:11:22:33:44:55',

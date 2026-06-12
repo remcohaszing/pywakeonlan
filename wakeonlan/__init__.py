@@ -8,6 +8,12 @@ import argparse
 import socket
 
 
+try:
+    from warnings import deprecated
+except ImportError:
+    from typing_extensions import deprecated
+
+
 BROADCAST_IP = '255.255.255.255'
 DEFAULT_PORT = 9
 
@@ -100,7 +106,7 @@ def create_socket(
     return sock
 
 
-def send_magic_packet(
+def wake(
     *macs: str,
     ip_address: str = BROADCAST_IP,
     port: int = DEFAULT_PORT,
@@ -137,6 +143,28 @@ def send_magic_packet(
     ) as sock:
         for packet in packets:
             sock.send(packet)
+
+
+@deprecated('Use wake() instead')
+def send_magic_packet(
+    *macs: str,
+    ip_address: str = BROADCAST_IP,
+    port: int = DEFAULT_PORT,
+    interface: str | None = None,
+    address_family: socket.AddressFamily = socket.AF_UNSPEC,
+) -> None:
+    """
+    Use :func:`wake` instead.
+
+    :meta private:
+    """
+    wake(
+        *macs,
+        ip_address=ip_address,
+        port=port,
+        interface=interface,
+        address_family=address_family,
+    )
 
 
 def main(argv: list[str] | None = None) -> None:
@@ -191,7 +219,7 @@ def main(argv: list[str] | None = None) -> None:
         address_family = socket.AF_INET
     elif args.ipv6:
         address_family = socket.AF_INET6
-    send_magic_packet(
+    wake(
         *args.macs,
         ip_address=args.ip,
         port=args.port,
