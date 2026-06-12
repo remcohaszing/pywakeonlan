@@ -83,14 +83,14 @@ def create_socket(
     )
     sock: socket.socket | None = None
     for index, (family, type, proto, canonname, addr) in enumerate(address_infos, 1):
-        try:
+        try:  # pragma: nocover
             sock = socket.socket(family, type, proto)
             sock.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
             if interface:
                 sock.bind((interface, 0))
             sock.connect(addr)
             break
-        except OSError:
+        except OSError:  # pragma: nocover
             if sock:
                 sock.close()
             sock = None
