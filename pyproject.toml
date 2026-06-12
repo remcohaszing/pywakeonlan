@@ -9,6 +9,9 @@ authors = [
     { name = "Remco Haszing", email = "remcohaszing@gmail.com" }
 ]
 dynamic = ["classifiers"]
+dependencies = [
+    "typing_extensions (>=4.5.0) ; python_version < '3.13'"
+]
 
 [project.urls]
 Source = "https://github.com/remcohaszing/pywakeonlan"
