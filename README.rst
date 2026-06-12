@@ -52,6 +52,7 @@ As a Python Module
 Wake up a single computer by its mac address
 
 .. code-block:: python
+
    import wakeonlan
 
    wakeonlan.wake('ff.ff.ff.ff.ff.ff')
@@ -59,6 +60,7 @@ Wake up a single computer by its mac address
 Wake up a single computer by its mac address with a SecureOn password
 
 .. code-block:: python
+
    import wakeonlan
 
    wakeonlan.wake('ff.ff.ff.ff.ff.ff/01:23:45:67:89:ab')
@@ -66,6 +68,7 @@ Wake up a single computer by its mac address with a SecureOn password
 Wake up multiple computers by their mac addresses.
 
 .. code-block:: python
+
    import wakeonlan
 
    wakeonlan.wake(
@@ -79,6 +82,7 @@ An external host may be specified. Do note that port forwarding on that host is
 required. The default ip address is ``255.255.255.255`` and the default port is 9.
 
 .. code-block:: python
+
    import wakeonlan
 
    wakeonlan.wake('ff.ff.ff.ff.ff.ff',
@@ -90,6 +94,7 @@ required. The default ip address is ``255.255.255.255`` and the default port is 
 A network adapter may be specified. The magic packet will be routed through this interface.
 
 .. code-block:: python
+
    import wakeonlan
 
    wakeonlan.wake(
