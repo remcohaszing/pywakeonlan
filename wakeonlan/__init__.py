@@ -8,9 +8,9 @@ import argparse
 import socket
 
 
-try:
+try:  # pragma: nocover
     from warnings import deprecated
-except ImportError:
+except ImportError:  # pragma: nocover
     from typing_extensions import deprecated
 
 

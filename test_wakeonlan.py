@@ -5,9 +5,10 @@ Tests for wakeonlan.
 
 import socket
 import unittest
+import warnings
 from unittest import mock
 
-from wakeonlan import create_magic_packet, create_socket, main, wake
+from wakeonlan import create_magic_packet, create_socket, main, send_magic_packet, wake
 
 
 class TestCreateMagicPacket(unittest.TestCase):
@@ -331,7 +332,7 @@ class TestCreateSocket(unittest.TestCase):
             self.assertEqual(addr[0], '::1')
 
 
-class TestSendMagicPacket(unittest.TestCase):
+class TestWake(unittest.TestCase):
     """
     Test :func:`wake`.
 
@@ -593,6 +594,48 @@ class TestSendMagicPacket(unittest.TestCase):
                 b'\x01\x23\x45\x67\x89\xab'
                 b'\x00\x00\x00\x00\x00\x00',
             )
+
+
+class TestSendMagicPacket(unittest.TestCase):
+    """
+    Test :func:`send_magic_packet`.
+
+    """
+
+    @mock.patch('wakeonlan.wake')
+    def test_main(self, wake: mock.Mock) -> None:
+        """
+        Test if processed arguments are passed to wake.
+
+        """
+        warnings.filterwarnings('ignore')
+        send_magic_packet('00:11:22:33:44:55')
+        send_magic_packet(
+            '00:11:22:33:44:55',
+            ip_address='example.com',
+            port=1234,
+            interface='192.168.1.1',
+            address_family=socket.AF_INET,
+        )
+        self.assertEqual(
+            wake.mock_calls,
+            [
+                mock.call(
+                    '00:11:22:33:44:55',
+                    ip_address='255.255.255.255',
+                    port=9,
+                    interface=None,
+                    address_family=socket.AF_UNSPEC,
+                ),
+                mock.call(
+                    '00:11:22:33:44:55',
+                    ip_address='example.com',
+                    port=1234,
+                    interface='192.168.1.1',
+                    address_family=socket.AF_INET,
+                ),
+            ],
+        )
 
 
 class TestMain(unittest.TestCase):
