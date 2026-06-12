@@ -155,10 +155,16 @@ def main(argv: list[str] | None = None) -> None:
         help='The mac addresses or "mac address/secureon password" tuples of the computers you are trying to wake.',
     )
     parser.add_argument(
+        '-4',
+        '--ipv4',
+        action='store_true',
+        help='To indicate ipv4 should be used.',
+    )
+    parser.add_argument(
         '-6',
         '--ipv6',
         action='store_true',
-        help='To indicate if ipv6 should be used by default instead of ipv4.',
+        help='To indicate ipv6 should be used.',
     )
     parser.add_argument(
         '-i',
@@ -179,12 +185,18 @@ def main(argv: list[str] | None = None) -> None:
         help='The ip address of the network adapter to route the magic packet through.',
     )
     args = parser.parse_args(argv)
+    if args.ipv4 is args.ipv6:
+        address_family = socket.AF_UNSPEC
+    elif args.ipv4:
+        address_family = socket.AF_INET
+    elif args.ipv6:
+        address_family = socket.AF_INET6
     send_magic_packet(
         *args.macs,
         ip_address=args.ip,
         port=args.port,
         interface=args.interface,
-        address_family=socket.AF_INET6 if args.ipv6 else socket.AF_UNSPEC,
+        address_family=address_family,
     )
 
 

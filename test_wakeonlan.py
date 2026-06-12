@@ -607,6 +607,7 @@ class TestMain(unittest.TestCase):
         Test if processed arguments are passed to send_magic_packet.
 
         """
+        main(['00:11:22:33:44:55'])
         main(['00:11:22:33:44:55', '-i', 'host.example', '-p', '1337'])
         main(
             [
@@ -619,10 +620,19 @@ class TestMain(unittest.TestCase):
                 '192.168.0.2',
             ]
         )
+        main(['00:11:22:33:44:55', '-i', 'host.example', '-p', '1337', '-4'])
         main(['00:11:22:33:44:55', '-i', 'host.example', '-p', '1337', '-6'])
+        main(['00:11:22:33:44:55', '-i', 'host.example', '-p', '1337', '-6', '-4'])
         self.assertEqual(
             send_magic_packet.mock_calls,
             [
+                mock.call(
+                    '00:11:22:33:44:55',
+                    ip_address='255.255.255.255',
+                    port=9,
+                    interface=None,
+                    address_family=socket.AF_UNSPEC,
+                ),
                 mock.call(
                     '00:11:22:33:44:55',
                     ip_address='host.example',
@@ -642,7 +652,21 @@ class TestMain(unittest.TestCase):
                     ip_address='host.example',
                     port=1337,
                     interface=None,
+                    address_family=socket.AF_INET,
+                ),
+                mock.call(
+                    '00:11:22:33:44:55',
+                    ip_address='host.example',
+                    port=1337,
+                    interface=None,
                     address_family=socket.AF_INET6,
+                ),
+                mock.call(
+                    '00:11:22:33:44:55',
+                    ip_address='host.example',
+                    port=1337,
+                    interface=None,
+                    address_family=socket.AF_UNSPEC,
                 ),
             ],
         )
