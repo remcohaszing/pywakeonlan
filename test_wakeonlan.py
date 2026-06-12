@@ -12,7 +12,7 @@ from wakeonlan import create_magic_packet, main, send_magic_packet
 
 class TestCreateMagicPacket(unittest.TestCase):
     """
-    Test :ref:`create_magic_packet`.
+    Test :func:`create_magic_packet`.
 
     """
 
@@ -255,7 +255,7 @@ class TestCreateMagicPacket(unittest.TestCase):
 
 class TestSendMagicPacket(unittest.TestCase):
     """
-    Test :ref:`send_magic_packet`.
+    Test :func:`send_magic_packet`.
 
     """
 
@@ -519,7 +519,7 @@ class TestSendMagicPacket(unittest.TestCase):
 
 class TestMain(unittest.TestCase):
     """
-    Test :ref:`main`.
+    Test :func:`main`.
 
     """
 
