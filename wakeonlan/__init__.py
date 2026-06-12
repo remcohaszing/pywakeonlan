@@ -14,7 +14,10 @@ except ImportError:  # pragma: nocover
     from typing_extensions import deprecated
 
 
+#: The IPv4 address to broadcast packages to
 BROADCAST_IP = '255.255.255.255'
+
+#: The default port to connect to when sending a wake on lan package.
 DEFAULT_PORT = 9
 
 
