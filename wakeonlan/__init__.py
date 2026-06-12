@@ -7,7 +7,6 @@ Small module for use with the wake on lan protocol.
 import argparse
 import ipaddress
 import socket
-import typing
 
 
 BROADCAST_IP = '255.255.255.255'
@@ -57,8 +56,8 @@ def send_magic_packet(
     *macs: str,
     ip_address: str = BROADCAST_IP,
     port: int = DEFAULT_PORT,
-    interface: typing.Optional[str] = None,
-    address_family: typing.Optional[socket.AddressFamily] = None,
+    interface: str | None = None,
+    address_family: socket.AddressFamily | None = None,
 ) -> None:
     """
     Wake up computers having any of the given mac addresses.
@@ -103,7 +102,7 @@ def _is_ipv6_address(ip_address: str) -> bool:
         return False
 
 
-def main(argv: typing.Optional[typing.List[str]] = None) -> None:
+def main(argv: list[str] | None = None) -> None:
     """
     Run wake on lan as a CLI application.
 
