@@ -73,7 +73,7 @@ An external host may be specified. Do note that port forwarding on that host is
 required. The default ip address is 255.255.255.255 and the default port is 9.
 
 >>> wakeonlan.wake('ff.ff.ff.ff.ff.ff',
-...                ip_address='example.com',
+...                host='example.com',
 ...                port=1337)
 
 
@@ -89,21 +89,21 @@ As a Standalone Script
 .. code-block:: console
 
    $ wakeonlan --help
-   usage: wakeonlan [-h] [-4] [-6] [-i IP] [-p PORT] [-n INTERFACE] mac address [mac address ...]
+   usage: wakeonlan [-h] [-4] [-6] [-o HOST] [-p PORT] [-n INTERFACE] mac address [mac address ...]
 
    Wake one or more computers using the wake on lan protocol.
-   
+
    positional arguments:
-     mac address           The mac addresses or "mac address/secureon password" tuples of the computers you are trying to wake.
-   
+   mac address           The mac addresses or "mac address/secureon password" tuples of the computers you are trying to wake.
+
    options:
-     -h, --help            show this help message and exit
-     -4, --ipv4            To indicate ipv4 should be used. (default: False)
-     -6, --ipv6            To indicate ipv6 should be used. (default: False)
-     -i IP, --ip IP        The ip address of the host to send the magic packet to. (default: 255.255.255.255)
-     -p PORT, --port PORT  The port of the host to send the magic packet to. (default: 9)
-     -n INTERFACE, --interface INTERFACE
-                           The ip address of the network adapter to route the magic packet through. (default: None)
+   -h, --help            show this help message and exit
+   -o HOST, --host HOST  The host name to send the magic packet to. (default: 255.255.255.255)
+   -p PORT, --port PORT  The port of the host to send the magic packet to. (default: 9)
+   -n INTERFACE, --interface INTERFACE
+                         The ip address of the network adapter to route the magic packet through. (default: None)
+   -4, --ipv4            To indicate ipv4 should be used. (default: False)
+   -6, --ipv6            To indicate ipv6 should be used. (default: False)
 
 
 *************

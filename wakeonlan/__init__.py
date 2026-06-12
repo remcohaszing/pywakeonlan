@@ -59,21 +59,20 @@ def create_magic_packet(macaddress: str) -> bytes:
 
 def create_socket(
     *,
-    ip_address: str = BROADCAST_IP,
+    host: str = BROADCAST_IP,
     port: int = DEFAULT_PORT,
     interface: str | None = None,
-    address_family: socket.AddressFamily = socket.AF_UNSPEC,
+    family: socket.AddressFamily = socket.AF_UNSPEC,
 ) -> socket.socket:
     """
     Create a socket that’s suitable for sending magic packets.
 
     Args:
-        ip_address: The hostname to connect to.
+        host: The hostname to connect to.
         port: The port to connect to.
         interface: The IP address of the network adapter to use.
-        address_family: The address family to send the magic packet to.
-            Use this to force the use of IPv4 or IPv6. The default is
-            to auto detect.
+        family: The address family to send the magic packet to. Use this
+            to force the use of IPv4 or IPv6. The default is to auto detect.
 
     Returns:
         A socket you can use for sending magic packets.
@@ -84,9 +83,7 @@ def create_socket(
     # This also matches the getaddrinfo man page, which states applications
     # should try using the addresses in order.
     # https://man7.org/linux/man-pages/man3/getaddrinfo.3.html
-    address_infos = socket.getaddrinfo(
-        ip_address, port, address_family, socket.SOCK_DGRAM
-    )
+    address_infos = socket.getaddrinfo(host, port, family, socket.SOCK_DGRAM)
     sock: socket.socket | None = None
     for index, (family, type, proto, canonname, addr) in enumerate(address_infos, 1):
         try:  # pragma: nocover
@@ -108,10 +105,10 @@ def create_socket(
 
 def wake(
     *macs: str,
-    ip_address: str = BROADCAST_IP,
+    host: str = BROADCAST_IP,
     port: int = DEFAULT_PORT,
     interface: str | None = None,
-    address_family: socket.AddressFamily = socket.AF_UNSPEC,
+    family: socket.AddressFamily = socket.AF_UNSPEC,
 ) -> None:
     """
     Wake up computers having any of the given mac addresses.
@@ -123,12 +120,12 @@ def wake(
             tuples of machines to wake.
 
     Keyword Args:
-        ip_address: the ip address of the host to send the magic packet
+        host: the ip address of the host to send the magic packet
             to.
         port: the port of the host to send the magic packet to.
         interface: the ip address of the network adapter to route the
             magic packet through.
-        address_family: the address family of the ip address to initiate
+        family: the address family of the ip address to initiate
             connection with. When not specificied, chosen automatically
             between IPv4 and IPv6.
 
@@ -136,10 +133,10 @@ def wake(
     packets = [create_magic_packet(mac) for mac in macs]
 
     with create_socket(
-        ip_address=ip_address,
+        host=host,
         port=port,
         interface=interface,
-        address_family=address_family,
+        family=family,
     ) as sock:
         for packet in packets:
             sock.send(packet)
@@ -160,10 +157,10 @@ def send_magic_packet(
     """
     wake(
         *macs,
-        ip_address=ip_address,
+        host=ip_address,
         port=port,
         interface=interface,
-        address_family=address_family,
+        family=address_family,
     )
 
 
@@ -183,22 +180,10 @@ def main(argv: list[str] | None = None) -> None:
         help='The mac addresses or "mac address/secureon password" tuples of the computers you are trying to wake.',
     )
     parser.add_argument(
-        '-4',
-        '--ipv4',
-        action='store_true',
-        help='To indicate ipv4 should be used.',
-    )
-    parser.add_argument(
-        '-6',
-        '--ipv6',
-        action='store_true',
-        help='To indicate ipv6 should be used.',
-    )
-    parser.add_argument(
-        '-i',
-        '--ip',
+        '-o',
+        '--host',
         default=BROADCAST_IP,
-        help='The ip address of the host to send the magic packet to.',
+        help='The host name to send the magic packet to.',
     )
     parser.add_argument(
         '-p',
@@ -212,19 +197,31 @@ def main(argv: list[str] | None = None) -> None:
         '--interface',
         help='The ip address of the network adapter to route the magic packet through.',
     )
+    parser.add_argument(
+        '-4',
+        '--ipv4',
+        action='store_true',
+        help='To indicate ipv4 should be used.',
+    )
+    parser.add_argument(
+        '-6',
+        '--ipv6',
+        action='store_true',
+        help='To indicate ipv6 should be used.',
+    )
     args = parser.parse_args(argv)
     if args.ipv4 is args.ipv6:
-        address_family = socket.AF_UNSPEC
+        family = socket.AF_UNSPEC
     elif args.ipv4:
-        address_family = socket.AF_INET
-    elif args.ipv6:
-        address_family = socket.AF_INET6
+        family = socket.AF_INET
+    else:
+        family = socket.AF_INET6
     wake(
         *args.macs,
-        ip_address=args.ip,
+        host=args.host,
         port=args.port,
         interface=args.interface,
-        address_family=address_family,
+        family=family,
     )
 
 

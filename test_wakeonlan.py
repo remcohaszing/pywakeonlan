@@ -309,7 +309,7 @@ class TestCreateSocket(unittest.TestCase):
         with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as server:
             server.bind(('', 1234))
             with create_socket(
-                ip_address='localhost', port=1234, address_family=socket.AF_INET
+                host='localhost', port=1234, family=socket.AF_INET
             ) as client:
                 client.send(b'Hello server!')
             data, addr = server.recvfrom(1024)
@@ -324,7 +324,7 @@ class TestCreateSocket(unittest.TestCase):
         with socket.socket(socket.AF_INET6, socket.SOCK_DGRAM) as server:
             server.bind(('', 1234))
             with create_socket(
-                ip_address='localhost', port=1234, address_family=socket.AF_INET6
+                host='localhost', port=1234, family=socket.AF_INET6
             ) as client:
                 client.send(b'Hello server!')
             data, addr = server.recvfrom(1024)
@@ -345,9 +345,7 @@ class TestWake(unittest.TestCase):
         """
         with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as sock:
             sock.bind(('127.0.0.255', 1234))
-            wake(
-                '133713371337', '00-00-00-00-00-00', ip_address='127.0.0.255', port=1234
-            )
+            wake('133713371337', '00-00-00-00-00-00', host='127.0.0.255', port=1234)
             data, addr = sock.recvfrom(1024)
             self.assertEqual(addr[0], '127.0.0.1')
             self.assertEqual(
@@ -490,7 +488,7 @@ class TestWake(unittest.TestCase):
 
     def test_send_correct_af_chosen_with_ipv6_address(self) -> None:
         """
-        Test whether AF_INET6 automatically chosen when the `address_family` argument is not given.
+        Test whether AF_INET6 automatically chosen when the `family` argument is not given.
 
         """
         with socket.socket(socket.AF_INET6, socket.SOCK_DGRAM) as sock:
@@ -498,7 +496,7 @@ class TestWake(unittest.TestCase):
             wake(
                 '133713371337',
                 '00-00-00-00-00-00',
-                ip_address='::1',
+                host='::1',
                 port=1234,
             )
             data, addr = sock.recvfrom(1024)
@@ -533,9 +531,9 @@ class TestWake(unittest.TestCase):
             sock.bind(('', 1234))
             wake(
                 '133713371337',
-                ip_address='localhost',
+                host='localhost',
                 port=1234,
-                address_family=socket.AF_INET6,
+                family=socket.AF_INET6,
             )
             data, addr = sock.recvfrom(1024)
             self.assertEqual(addr[0], '::1')
@@ -622,17 +620,17 @@ class TestSendMagicPacket(unittest.TestCase):
             [
                 mock.call(
                     '00:11:22:33:44:55',
-                    ip_address='255.255.255.255',
+                    host='255.255.255.255',
                     port=9,
                     interface=None,
-                    address_family=socket.AF_UNSPEC,
+                    family=socket.AF_UNSPEC,
                 ),
                 mock.call(
                     '00:11:22:33:44:55',
-                    ip_address='example.com',
+                    host='example.com',
                     port=1234,
                     interface='192.168.1.1',
-                    address_family=socket.AF_INET,
+                    family=socket.AF_INET,
                 ),
             ],
         )
@@ -651,11 +649,11 @@ class TestMain(unittest.TestCase):
 
         """
         main(['00:11:22:33:44:55'])
-        main(['00:11:22:33:44:55', '-i', 'host.example', '-p', '1337'])
+        main(['00:11:22:33:44:55', '-o', 'host.example', '-p', '1337'])
         main(
             [
                 '00:11:22:33:44:55',
-                '-i',
+                '-o',
                 'host.example',
                 '-p',
                 '1337',
@@ -663,53 +661,53 @@ class TestMain(unittest.TestCase):
                 '192.168.0.2',
             ]
         )
-        main(['00:11:22:33:44:55', '-i', 'host.example', '-p', '1337', '-4'])
-        main(['00:11:22:33:44:55', '-i', 'host.example', '-p', '1337', '-6'])
-        main(['00:11:22:33:44:55', '-i', 'host.example', '-p', '1337', '-6', '-4'])
+        main(['00:11:22:33:44:55', '-o', 'host.example', '-p', '1337', '-4'])
+        main(['00:11:22:33:44:55', '-o', 'host.example', '-p', '1337', '-6'])
+        main(['00:11:22:33:44:55', '-o', 'host.example', '-p', '1337', '-6', '-4'])
         self.assertEqual(
             wake.mock_calls,
             [
                 mock.call(
                     '00:11:22:33:44:55',
-                    ip_address='255.255.255.255',
+                    host='255.255.255.255',
                     port=9,
                     interface=None,
-                    address_family=socket.AF_UNSPEC,
+                    family=socket.AF_UNSPEC,
                 ),
                 mock.call(
                     '00:11:22:33:44:55',
-                    ip_address='host.example',
+                    host='host.example',
                     port=1337,
                     interface=None,
-                    address_family=socket.AF_UNSPEC,
+                    family=socket.AF_UNSPEC,
                 ),
                 mock.call(
                     '00:11:22:33:44:55',
-                    ip_address='host.example',
+                    host='host.example',
                     port=1337,
                     interface='192.168.0.2',
-                    address_family=socket.AF_UNSPEC,
+                    family=socket.AF_UNSPEC,
                 ),
                 mock.call(
                     '00:11:22:33:44:55',
-                    ip_address='host.example',
+                    host='host.example',
                     port=1337,
                     interface=None,
-                    address_family=socket.AF_INET,
+                    family=socket.AF_INET,
                 ),
                 mock.call(
                     '00:11:22:33:44:55',
-                    ip_address='host.example',
+                    host='host.example',
                     port=1337,
                     interface=None,
-                    address_family=socket.AF_INET6,
+                    family=socket.AF_INET6,
                 ),
                 mock.call(
                     '00:11:22:33:44:55',
-                    ip_address='host.example',
+                    host='host.example',
                     port=1337,
                     interface=None,
-                    address_family=socket.AF_UNSPEC,
+                    family=socket.AF_UNSPEC,
                 ),
             ],
         )
