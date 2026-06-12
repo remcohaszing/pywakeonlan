@@ -7,7 +7,7 @@ import socket
 import unittest
 from unittest import mock
 
-from wakeonlan import create_magic_packet, main, send_magic_packet
+from wakeonlan import create_magic_packet, create_socket, main, send_magic_packet
 
 
 class TestCreateMagicPacket(unittest.TestCase):
@@ -251,6 +251,84 @@ class TestCreateMagicPacket(unittest.TestCase):
         """
         with self.assertRaises(ValueError, msg='Incorrect SecureOn password format'):
             create_magic_packet('01:23:45:67:89:ab/invalid')
+
+
+class TestCreateSocket(unittest.TestCase):
+    """
+    Test :func:`create_socket`.
+
+    """
+
+    def test_ipv4_broadcast(self) -> None:
+        """
+        Test if IPv4 works.
+
+        """
+        with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as server:
+            server.bind(('', 1234))
+            with create_socket(port=1234) as client:
+                client.send(b'Hello server!')
+            data, addr = server.recvfrom(1024)
+            self.assertEqual(data, b'Hello server!')
+            self.assertEqual(addr[0], socket.gethostbyname(socket.gethostname()))
+
+    def test_ipv6_broadcast(self) -> None:
+        """
+        Test if IPv6 works.
+
+        """
+        with socket.socket(socket.AF_INET6, socket.SOCK_DGRAM) as server:
+            server.bind(('', 1234))
+            with create_socket(port=1234) as client:
+                client.send(b'Hello server!')
+            data, addr = server.recvfrom(1024)
+            self.assertEqual(data, b'Hello server!')
+            self.assertEqual(
+                addr[0], f'::ffff:{socket.gethostbyname(socket.gethostname())}'
+            )
+
+    def test_interface(self) -> None:
+        """
+        Test if IPv4 works.
+
+        """
+        with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as server:
+            server.bind(('', 1234))
+            with create_socket(interface='127.0.0.1', port=1234) as client:
+                client.send(b'Hello server!')
+            data, addr = server.recvfrom(1024)
+            self.assertEqual(data, b'Hello server!')
+            self.assertEqual(addr[0], '127.0.0.1')
+
+    def test_explicit_ipv4(self) -> None:
+        """
+        Test if explicit IPv4 works.
+
+        """
+        with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as server:
+            server.bind(('', 1234))
+            with create_socket(
+                ip_address='localhost', port=1234, address_family=socket.AF_INET
+            ) as client:
+                client.send(b'Hello server!')
+            data, addr = server.recvfrom(1024)
+            self.assertEqual(data, b'Hello server!')
+            self.assertEqual(addr[0], '127.0.0.1')
+
+    def test_explicit_ipv6(self) -> None:
+        """
+        Test if explicit IPv4 works.
+
+        """
+        with socket.socket(socket.AF_INET6, socket.SOCK_DGRAM) as server:
+            server.bind(('', 1234))
+            with create_socket(
+                ip_address='localhost', port=1234, address_family=socket.AF_INET6
+            ) as client:
+                client.send(b'Hello server!')
+            data, addr = server.recvfrom(1024)
+            self.assertEqual(data, b'Hello server!')
+            self.assertEqual(addr[0], '::1')
 
 
 class TestSendMagicPacket(unittest.TestCase):
@@ -550,14 +628,14 @@ class TestMain(unittest.TestCase):
                     ip_address='host.example',
                     port=1337,
                     interface=None,
-                    address_family=None,
+                    address_family=socket.AF_UNSPEC,
                 ),
                 mock.call(
                     '00:11:22:33:44:55',
                     ip_address='host.example',
                     port=1337,
                     interface='192.168.0.2',
-                    address_family=None,
+                    address_family=socket.AF_UNSPEC,
                 ),
                 mock.call(
                     '00:11:22:33:44:55',
