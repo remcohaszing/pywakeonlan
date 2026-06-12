@@ -6,7 +6,6 @@ Small module for use with the wake on lan protocol.
 
 import argparse
 import socket
-import typing
 
 
 BROADCAST_IP = '255.255.255.255'
@@ -56,7 +55,7 @@ def create_socket(
     *,
     ip_address: str = BROADCAST_IP,
     port: int = DEFAULT_PORT,
-    interface: typing.Optional[str] = None,
+    interface: str | None = None,
     address_family: socket.AddressFamily = socket.AF_UNSPEC,
 ) -> socket.socket:
     """
@@ -82,7 +81,7 @@ def create_socket(
     address_infos = socket.getaddrinfo(
         ip_address, port, address_family, socket.SOCK_DGRAM
     )
-    sock: typing.Optional[socket.socket] = None
+    sock: socket.socket | None = None
     for index, (family, type, proto, canonname, addr) in enumerate(address_infos, 1):
         try:
             sock = socket.socket(family, type, proto)
@@ -105,7 +104,7 @@ def send_magic_packet(
     *macs: str,
     ip_address: str = BROADCAST_IP,
     port: int = DEFAULT_PORT,
-    interface: typing.Optional[str] = None,
+    interface: str | None = None,
     address_family: socket.AddressFamily = socket.AF_UNSPEC,
 ) -> None:
     """
@@ -140,7 +139,7 @@ def send_magic_packet(
             sock.send(packet)
 
 
-def main(argv: typing.Optional[typing.List[str]] = None) -> None:
+def main(argv: list[str] | None = None) -> None:
     """
     Run wake on lan as a CLI application.
 
