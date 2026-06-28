@@ -119,10 +119,8 @@ def wake(
     Wake on lan must be enabled on the host device.
 
     Args:
-        macs: One or more mac addresses or "mac address/secureon password"
+        *macs: One or more mac addresses or "mac address/secureon password"
             tuples of machines to wake.
-
-    Keyword Args:
         host: the ip address of the host to send the magic packet
             to.
         port: the port of the host to send the magic packet to.
