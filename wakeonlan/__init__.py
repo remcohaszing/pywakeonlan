@@ -217,13 +217,16 @@ def main(argv: list[str] | None = None) -> None:
         family = socket.AF_INET
     else:
         family = socket.AF_INET6
-    wake(
-        *args.macs,
-        host=args.host,
-        port=args.port,
-        interface=args.interface,
-        family=family,
-    )
+    try:
+        wake(
+            *args.macs,
+            host=args.host,
+            port=args.port,
+            interface=args.interface,
+            family=family,
+        )
+    except ValueError as err:
+        parser.error(str(err))
 
 
 if __name__ == '__main__':  # pragma: nocover
