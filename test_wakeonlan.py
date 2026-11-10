@@ -3,6 +3,7 @@ Tests for wakeonlan.
 
 """
 
+import io
 import socket
 import unittest
 import warnings
@@ -711,6 +712,19 @@ class TestMain(unittest.TestCase):
                 ),
             ],
         )
+
+    def test_invalid_mac_exits_with_usage_error(self) -> None:
+        """
+        Test that an invalid mac address is reported as a CLI usage error
+        instead of an unhandled traceback.
+        """
+        stderr = io.StringIO()
+        with mock.patch('sys.stderr', stderr):
+            with self.assertRaises(SystemExit) as raised:
+                main(['invalid'])
+        self.assertEqual(raised.exception.code, 2)
+        self.assertIn('Incorrect MAC address format', stderr.getvalue())
+        self.assertNotIn('Traceback', stderr.getvalue())
 
 
 if __name__ == '__main__':
